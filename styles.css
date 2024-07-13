@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Red+Hat+Text:ital,wght@0,300..700;1,300..700&display=swap');
+
+:root{
+    --primary-color-one: hsl(14, 86%, 42%);
+    --primary-color-two: hsl(159, 69%, 38%);
+    --rose-variant-one: hsl(20, 50%, 98%);
+    --rose-variant-two: hsl(13, 31%, 94%);
+    --rose-variant-three: hsl(14, 25%, 72%);
+    --rose-variant-four: hsl(7, 20%, 60%);
+    --rose-variant-five: hsl(12, 20%, 44%);
+    --rose-variant-six: hsl(14, 65%, 9%);
+    --font-weight-regular: 400;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    --font-size-product-names: 16px;
+
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: 'Red Hat Text', sans-serif;
+}
