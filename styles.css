@@ -24,4 +24,6 @@
 
 body{
     font-family: 'Red Hat Text', sans-serif;
+    /* background-color: hsl(60, 57%, 95%); */
+    background-color: var(--rose-variant-two);
 }
