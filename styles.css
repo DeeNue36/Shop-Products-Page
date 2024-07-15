@@ -24,6 +24,65 @@
 
 body{
     font-family: 'Red Hat Text', sans-serif;
-    /* background-color: hsl(60, 57%, 95%); */
-    background-color: var(--rose-variant-two);
+    background-color: hsl(60, 63%, 95%);
+    /* background-color: var(--rose-variant-two); */
+}
+
+.products-container{
+    margin: 50px 80px;
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    gap: 25px;
+}
+
+.product-listings{
+    display: grid;
+}
+
+.products{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    justify-content: space-between;
+}
+
+.product-cards{
+    display: flex;
+    flex-direction: column;
+}
+
+.product-img{
+    width: 240px;
+    border-radius: 10px;
+}
+
+.add-product{
+    display: flex;
+    justify-content: center;
+    font-family: 'Red Hat Text', sans-serif;
+    font-weight: var(--font-weight-semibold);
+    border: 1px solid #000;
+    outline: none;
+    background-color: #fff;
+    padding: 10px 15px;
+    width: 60%;
+    margin: 0 auto;
+    position: relative;
+    bottom: 20px;
+    border-radius: 25px;
+    cursor: pointer;
+}
+
+.add-product img{
+    padding-right: 5px;
+}
+
+.cart{
+    background-color: hsl(0, 0%, 100%);
+    border-radius: 10px;
+    padding: 15px 10px;
+    height: fit-content;
+}
+
+.cart h3{
+    color: var(--primary-color-one);
 }

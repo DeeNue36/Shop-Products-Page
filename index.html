@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Text:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
     <title>Shop Page</title>
 </head>
+
 <body>
     <section class="products-container">
 
@@ -16,14 +17,40 @@
             <h1>Desserts</h1>
 
             <div class="products">
-                
+                <div class="product-cards">
+                    <img src="assets/images/image-waffle-desktop.jpg" 
+                        class="product-img"
+                        alt="waffles-desktop"
+                    >
+                    <button class="add-product"> 
+                        <img src="assets/images/icon-add-to-cart.svg" alt="">
+                        Add to Cart
+                    </button>
+                    <p>Waffles</p>
+                    <h4>Waffle with Berries</h4>
+                </div>
             </div>
         </div>
 
-        <div class="cart">
+        <aside class="cart">
+            <h3>Your Cart <span id="cart-amount">(0)</span></h3>
+        </aside>
 
-        </div>
     </section>
     
 </body>
+
+<script src="shop.js"></script>
 </html>
+
+<!-- var news = document.getElementsByClassName("news-story")[0];
+var items = json.items;
+for(var i = 0; i < items.length; i++) {
+    var h5 = document.createElement("h5");
+    h5.innerHTML = items[i].title;
+    news.appendChild(h5);
+    var p = document.createElement("p");
+    p.innerHTML = items[i].author;
+    news.appendChild(p);
+
+} -->
