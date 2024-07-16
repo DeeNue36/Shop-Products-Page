@@ -43,6 +43,7 @@ body{
     display: grid;
     grid-template-columns: auto auto auto;
     justify-content: space-between;
+    margin-top: 25px;
 }
 
 .product-cards{
@@ -64,7 +65,7 @@ body{
     outline: none;
     background-color: #fff;
     padding: 10px 15px;
-    width: 60%;
+    /* width: 60%; */
     margin: 0 auto;
     position: relative;
     bottom: 20px;
@@ -80,7 +81,7 @@ body{
     background-color: hsl(0, 0%, 100%);
     border-radius: 10px;
     padding: 15px 10px;
-    height: fit-content;
+    height: max-content;
 }
 
 .cart h3{
