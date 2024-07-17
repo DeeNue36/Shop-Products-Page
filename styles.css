@@ -29,9 +29,10 @@ body{
 }
 
 .products-container{
-    margin: 50px 80px;
+    margin: 50px 70px;
     display: grid;
-    grid-template-columns: 3fr 1fr;
+    /* grid-template-columns: 3fr 1fr; */
+    grid-template-columns: auto auto;
     gap: 25px;
 }
 
@@ -42,6 +43,8 @@ body{
 .products{
     display: grid;
     grid-template-columns: auto auto auto;
+    row-gap: 40px;
+    column-gap: 15px;
     justify-content: space-between;
     margin-top: 25px;
 }
@@ -59,13 +62,14 @@ body{
 .add-product{
     display: flex;
     justify-content: center;
+    align-items: center;
     font-family: 'Red Hat Text', sans-serif;
     font-weight: var(--font-weight-semibold);
     border: 1px solid #000;
     outline: none;
     background-color: #fff;
     padding: 10px 15px;
-    /* width: 60%; */
+    width: 60%;
     margin: 0 auto;
     position: relative;
     bottom: 20px;
@@ -73,17 +77,53 @@ body{
     cursor: pointer;
 }
 
+.add-product:hover{
+    border: 1px solid var(--primary-color-one);
+    color: var(--primary-color-one);
+}
+
 .add-product img{
     padding-right: 5px;
+}
+
+.product-category{
+    color: var(--rose-variant-three);
+    font-size: 14px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    width: max-content;
+}
+
+.product-name{
+    font-size: var(--font-size-product-names);
+    font-weight: 700;
+    margin-bottom: 8px;
+    cursor: pointer;
+    width: max-content;
+}
+
+.product-price{
+    color: var(--primary-color-one);
+    width: max-content;
 }
 
 .cart{
     background-color: hsl(0, 0%, 100%);
     border-radius: 10px;
-    padding: 15px 10px;
+    padding: 15px 20px 30px;
     height: max-content;
 }
 
 .cart h3{
     color: var(--primary-color-one);
+}
+
+.empty-cart {
+    display: block;
+    margin: 30px auto;
+}
+
+.empty-cart-message {
+    text-align: center;
+    font-size: 14px;
 }
