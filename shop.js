@@ -1,10 +1,8 @@
-const productListings = document.querySelectorAll('product-cards');
-
 fetch('./assets/data.json')
     .then(response => response.json())
     .then(data => {
-        let productElements = document.getElementById("products");
         console.log(data);
+        let productElements = document.getElementById("products");
         let html = "";
         data.forEach(products => {
             html += 
@@ -20,9 +18,9 @@ fetch('./assets/data.json')
                         >
                         Add to Cart
                     </button>
-                    <span>${products.category}</span
-                    <p>${products.name}</p>
-                    <h4 class="">$${parseFloat(products.price).toFixed(2)}</h4>
+                    <span class="product-category">${products.category}</span>
+                    <p class="product-name">${products.name}</p>
+                    <h4 class="product-price">$${parseFloat(products.price).toFixed(2)}</h4>
                 </div>
             `;
             productElements.innerHTML = html;
