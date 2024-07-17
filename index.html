@@ -13,7 +13,7 @@
 <body>
     <section class="products-container">
 
-        <div class="product-listings">
+        <main class="product-listings">
             <h1>Desserts</h1>
 
             
@@ -32,10 +32,23 @@
                     <h4>Waffle with Berries</h4>
                 </div> -->
             </div>
-        </div>
+        </main>
+
 
         <aside class="cart">
-            <h3>Your Cart <span id="cart-amount">(0)</span></h3>
+            <h3>
+                Your Cart (<span id="cart-amount">0</span>)
+            </h3>
+            <div class="cart-contents">
+                <img src="assets/images/illustration-empty-cart.svg" 
+                    class="empty-cart"
+                    alt="empty-cart"
+                >
+                <p class="empty-cart-message">
+                    Your added items will appear here
+                </p>
+            </div>
+            
         </aside>
 
     </section>
