@@ -59,6 +59,54 @@ body{
     border-radius: 10px;
 }
 
+.quantity{
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--primary-color-one);
+    width: 144px;
+    border-radius: 25px;
+    padding: 10px 15px;
+    margin: 0 auto;
+    position: relative;
+    bottom: 20px;
+}
+
+.decrease-quantity, .increase-quantity{
+    border-radius: 50%;
+    /* padding: 5px; */
+    border: none;
+    background-color: transparent;
+    border: 1px solid #fff;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+}
+
+.decrease-quantity:hover, .increase-quantity:hover{
+    .add, .minus{
+        fill: var(--primary-color-one);
+    };
+    background-color: #fff;
+    
+}
+
+.minus, .add{
+    fill: #fff;
+    width: 10px;
+    height: 10px;
+}
+
+.add{
+    display: block;
+    margin: 0 auto;
+}
+
+.quantity-value{
+    color: #fff;
+    pointer-events: none;
+}
+
 .add-product{
     display: flex;
     justify-content: center;
