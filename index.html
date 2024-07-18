@@ -16,7 +16,22 @@
         <main class="product-listings">
             <h1>Desserts</h1>
 
-            
+            <!-- <div class="quantity" id="quantities">
+                <button type="button" class="decrease-quantity">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="minus" width="10" height="8" viewBox="0 0 10 2">
+                        <path d="M0 .375h10v1.25H0V.375Z" fill-rule="evenodd"/>
+                    </svg>
+                </button>
+
+                <span class="quantity-value">1</span>
+
+                <button type="button" class="increase-quantity">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="add" width="10" height="10" viewBox="0 0 10 10">
+                        <path d="M10 4.375H5.625V0h-1.25v4.375H0v1.25h4.375V10h1.25V5.625H10v-1.25Z"
+                        fill-rule="evenodd"/>
+                    </svg>
+                </button>
+            </div> -->
 
             <div class="products" id="products">
                 <!-- <div class="product-cards">
@@ -28,6 +43,7 @@
                         <img src="assets/images/icon-add-to-cart.svg" alt="">
                         Add to Cart
                     </button> -->
+                    
                     <!-- <p>Waffles</p>
                     <h4>Waffle with Berries</h4>
                 </div> -->
@@ -39,7 +55,7 @@
             <h3>
                 Your Cart (<span id="cart-amount">0</span>)
             </h3>
-            <div class="cart-contents">
+            <div class="cart-contents" id="cart-contents">
                 <img src="assets/images/illustration-empty-cart.svg" 
                     class="empty-cart"
                     alt="empty-cart"
@@ -53,9 +69,9 @@
 
     </section>
     
+    <script src="shop.js"></script>
 </body>
 
-<script src="shop.js"></script>
 </html>
 
 <!-- var news = document.getElementsByClassName("news-story")[0];
