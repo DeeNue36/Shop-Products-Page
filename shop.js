@@ -10,6 +10,7 @@ fetch('./assets/data.json')
             <div class="product-cards">
                 <img src="${products.image.desktop}" 
                     class="product-img"
+                    id="product-image"
                     alt="${products.name}-desktop"
                 >
                 <button type="button" class="add-product" id="add-to-cart"> 
@@ -53,15 +54,20 @@ function handleAddToCart(event) {
     // event.target refers to the element that triggered the event
     const button = event.target.closest('button');
 
-    //Finds the nearest .product-cards container that encloses this button. 
+    //Finds the nearest product cards container that encloses the button that is clicked.
+    //When a button is clicked find the nearest product cards container
     const productCard = button.closest('.product-cards');
 
     //searches the product-cards container for the element that has the class "quantity"
     const quantityDiv = productCard.querySelector('.quantity');
     
+    //Selects the product image in the product cards container
+    const imageBorder = productCard.querySelector('.product-img');
+
     // hide add to cart button and display the increment & decrement button on click
     button.style.display = 'none';
     quantityDiv.style.display = 'flex';
+    imageBorder.style.border = '2px dashed #c73a0f';
 
     const increaseButton = quantityDiv.querySelector('.increase-quantity');
     const decreaseButton = quantityDiv.querySelector('.decrease-quantity');
@@ -81,6 +87,7 @@ function handleAddToCart(event) {
         } else {
             quantityDiv.style.display = 'none';
             button.style.display = 'flex';
+            imageBorder.style.border = 'none';
         }
     });
 }
