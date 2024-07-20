@@ -49,6 +49,18 @@ fetch('./assets/data.json')
     });
 });
 
+// Assuming the cart count is within an <h3> inside .cart
+
+function updateCartAmount(count) {
+    const cartAmount = document.querySelector('.cart h3'); 
+    const match = cartAmount.textContent.match(/\((\d+)\)/);
+    if (match) {
+        const currentCount = parseInt(match[1]);
+        const newCount = Math.max(0, currentCount + count);
+        cartAmount.textContent = cartAmount.textContent.replace(/\(\d+\)/, `(${newCount})`);
+    }
+}
+
 function handleAddToCart(event) {
     //used to identify the specific button that was clicked
     // event.target refers to the element that triggered the event
@@ -69,6 +81,8 @@ function handleAddToCart(event) {
     quantityDiv.style.display = 'flex';
     imageBorder.style.border = '2px dashed #c73a0f';
 
+    updateCartAmount(1); // Increment the cart count by 1 when an item is added
+
     const increaseButton = quantityDiv.querySelector('.increase-quantity');
     const decreaseButton = quantityDiv.querySelector('.decrease-quantity');
     const quantityValue = quantityDiv.querySelector('.quantity-value');
@@ -78,16 +92,19 @@ function handleAddToCart(event) {
     increaseButton.addEventListener('click', () => {
         quantity++;
         quantityValue.innerText = quantity;
+        updateCartAmount(1);
     });
 
     decreaseButton.addEventListener('click', () => {
         if (quantity > 1) {
             quantity--;
             quantityValue.innerText = quantity;
+            updateCartAmount(-1);
         } else {
             quantityDiv.style.display = 'none';
             button.style.display = 'flex';
             imageBorder.style.border = 'none';
+            updateCartAmount(-1);
         }
     });
 }
