@@ -25,15 +25,19 @@
 body{
     font-family: 'Red Hat Text', sans-serif;
     background-color: hsl(60, 63%, 95%);
+    background-image: url("assets/bg-images/bg-01.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
     /* background-color: var(--rose-variant-two); */
 }
 
 .products-container{
-    margin: 50px 70px;
+    margin: 50px 30px 50px 60px;
     display: grid;
     /* grid-template-columns: 3fr 1fr; */
     grid-template-columns: auto auto;
-    gap: 25px;
+    gap: 20px;
 }
 
 .product-listings{
@@ -44,7 +48,7 @@ body{
     display: grid;
     grid-template-columns: auto auto auto;
     row-gap: 40px;
-    column-gap: 15px;
+    /* column-gap: 5px; */
     justify-content: space-between;
     margin-top: 25px;
 }
@@ -52,6 +56,12 @@ body{
 .product-cards{
     display: flex;
     flex-direction: column;
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px) !important;
+    border: 1px solid #e2e5e358;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: -4px 2px 5px 0px #bebbbb;
 }
 
 .product-img{
