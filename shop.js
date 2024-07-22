@@ -1,3 +1,6 @@
+let cartCount = 0; // Global variable to keep track of the cart count
+const cart = {};
+
 fetch('./assets/data.json')
 .then(response => response.json())
 .then(data => {
@@ -7,7 +10,7 @@ fetch('./assets/data.json')
     data.forEach(products => {
         html += 
         `
-            <div class="product-cards">
+            <div class="product-cards" data-id='${products.id}'>
                 <img src="${products.image.desktop}" 
                     class="product-img"
                     id="product-image"
@@ -47,24 +50,103 @@ fetch('./assets/data.json')
     document.querySelectorAll('.add-product').forEach(button => {
         button.addEventListener('click', handleAddToCart);
     });
+
+    document.querySelectorAll('.increase-quantity').forEach(button => {
+        button.addEventListener('click', handleIncreaseQuantity);
+    });
+
+    document.querySelectorAll('.decrease-quantity').forEach(button => {
+        button.addEventListener('click', handleDecreaseQuantity);
+    });
+
 });
 
-// Assuming the cart count is within an <h3> inside .cart
-
-function updateCartAmount(count) {
-    const cartAmount = document.querySelector('.cart h3'); 
-    const match = cartAmount.textContent.match(/\((\d+)\)/);
-    if (match) {
-        const currentCount = parseInt(match[1]);
-        const newCount = Math.max(0, currentCount + count);
-        cartAmount.textContent = cartAmount.textContent.replace(/\(\d+\)/, `(${newCount})`);
-    }
+function handleAddToCart(event) {
+    const id = parseInt(event.target.parentElement.getAttribute('data-id'));
+    updateCartCount(id, 'increase');
+    toggleButtonState(event.target, true);
 }
 
-function handleAddToCart(event) {
+function toggleButtonState(button, isVisible) {
+    button.style.display = isVisible ? 'none' : 'flex';
+    const quantityDiv = button.closest('.product-cards').querySelector('.quantity');
+    quantityDiv.style.display = isVisible ? 'flex' : 'none';
+    const imageBorder = button.closest('.product-cards').querySelector('.product-img');
+    imageBorder.style.border = isVisible ? '2px dashed #c73a0f' : 'none';
+}
+
+
+// function handleAddToCart(event) {
+    
+//     const id = parseInt(event.target.parentElement.getAttribute('data-id'));
+    
+
+//     // console.log(id);
+//     // const quantityValue = 
+//     // cartCount++;
+//     updateCartCount(id, 'increase');
+//     changeButtonState(event, id);
+
+//     // const addToCartBtn = productCard.querySelector('.add-product');
+//     // const increaseButton = quantityDiv.querySelector('.increase-quantity');
+//     // const decreaseButton = quantityDiv.querySelector('.decrease-quantity');
+//     // const quantityValue = quantityDiv.querySelector('.quantity-value');
+
+//     // increaseButton.addEventListener('click', () => {
+//     //     cartCount++;
+//     //     updateCartCount();
+//     //     quantityValue.innerText = parseInt(quantityValue.innerText) + 1;
+//     // });
+
+//     // decreaseButton.addEventListener('click', () => {
+//     //     const currentQuantity = parseInt(quantityValue.innerText);
+//     //     if (currentQuantity > 1) {
+//     //         cartCount--;
+//     //         updateCartCount();
+//     //         quantityValue.innerText = currentQuantity - 1;
+//     //     } else {
+//     //         quantityDiv.style.display = 'none';
+//     //         button.style.display = 'flex';
+//     //         imageBorder.style.border = 'none';
+//     //         cartCount--;
+//     //         updateCartCount();
+//     //     }
+//     // });
+
+//     // const cartAmount = document.getElementById('cart-quantity');
+
+//     // let cartValue = 0;
+
+//     // addToCartBtn.addEventListener('click', (event) =>{
+//     //     const id = parseInt(event.target.getAttribute('data-id'));
+//     //     console.log(cartValue, event, id);
+//     //     cartValue++;
+//     //     cartAmount.innerText = cartValue;   
+//     // });
+
+//     // let quantity = 1;
+    
+//     // increaseButton.addEventListener('click', () => {
+//     //     quantity++;
+//     //     quantityValue.innerText = quantity;
+//     // });
+
+//     // decreaseButton.addEventListener('click', () => {
+//     //     if (quantity > 1) {
+//     //         quantity--;
+//     //         quantityValue.innerText = quantity;
+//     //     } else {
+//     //         quantityDiv.style.display = 'none';
+//     //         button.style.display = 'flex';
+//     //         imageBorder.style.border = 'none';
+//     //     }
+//     // });
+// }
+
+function changeButtonState(event, id) {
     //used to identify the specific button that was clicked
     // event.target refers to the element that triggered the event
-    const button = event.target.closest('button');
+    const button = event.target;
 
     //Finds the nearest product cards container that encloses the button that is clicked.
     //When a button is clicked find the nearest product cards container
@@ -76,37 +158,69 @@ function handleAddToCart(event) {
     //Selects the product image in the product cards container
     const imageBorder = productCard.querySelector('.product-img');
 
-    // hide add to cart button and display the increment & decrement button on click
-    button.style.display = 'none';
-    quantityDiv.style.display = 'flex';
-    imageBorder.style.border = '2px dashed #c73a0f';
+    const value = cart[id] || 0;
+    console.log(value);
+    if (value >=1){
+        // hide add to cart button and display the increment & decrement button on click
+        button.style.display = 'none';
+        quantityDiv.style.display = 'flex';
+        imageBorder.style.border = '2px dashed #c73a0f';
+    }
+    else{
+        button.style.display = 'flex';
+        quantityDiv.style.display = 'none';
+        imageBorder.style.border = 'none';
+    }
+}
 
-    updateCartAmount(1); // Increment the cart count by 1 when an item is added
+function handleIncreaseQuantity(event) {
+    // const id = parseInt(event.target.closest('.product-cards').getAttribute('data-id'));
+    // // cartCount++;
+    // updateCartCount(id, 'increase');
+    const id = parseInt(event.target.closest('.product-cards').getAttribute('data-id'));
+    updateCartCount(id, 'increase');
 
-    const increaseButton = quantityDiv.querySelector('.increase-quantity');
-    const decreaseButton = quantityDiv.querySelector('.decrease-quantity');
-    const quantityValue = quantityDiv.querySelector('.quantity-value');
+}
 
-    let quantity = 1;
-    
-    increaseButton.addEventListener('click', () => {
-        quantity++;
-        quantityValue.innerText = quantity;
-        updateCartAmount(1);
-    });
+function handleDecreaseQuantity(event) {
+    // const id = parseInt(event.target.closest('.product-cards').getAttribute('data-id'));
+    // // cartCount--;
+    // updateCartCount(id, 'decrease');
+    // changeButtonState(id);
+    const id = parseInt(event.target.closest('.product-cards').getAttribute('data-id'));
+    updateCartCount(id, 'decrease');
+    const button = event.target.closest('.product-cards').querySelector('.add-product');
+    if (cart[id] === 0) {
+        toggleButtonState(button, false);
+    }
+}
 
-    decreaseButton.addEventListener('click', () => {
-        if (quantity > 1) {
-            quantity--;
-            quantityValue.innerText = quantity;
-            updateCartAmount(-1);
-        } else {
-            quantityDiv.style.display = 'none';
-            button.style.display = 'flex';
-            imageBorder.style.border = 'none';
-            updateCartAmount(-1);
-        }
-    });
+function updateCartCount(id, operation, quantity=1) {
+    const prevValue = cart[id] || 0;
+    let value = prevValue;
+    // console.log(id, operation, cart);
+    if(operation === 'increase') {
+        value += quantity;
+        cartCount = cartCount + quantity;
+    }
+    else if(value > 0 && operation === 'decrease') {
+        value -= quantity;
+        cartCount = cartCount - quantity;
+    }
+    cart[id] = value;
+    // console.log(cartCount, operation, value);
+
+    //Cart value
+    const cartAmount = document.getElementById('cart-quantity');
+    cartAmount.innerText = cartCount;
+
+    const productCards = document.querySelector(`.product-cards[data-id='${id}']`);
+    // console.log(productCards, id);
+
+    //increment & decrement button value
+    const quantityAmount = productCards.querySelector('#quantity-value');
+    // console.log(quantityAmount);
+    quantityAmount.innerText = value;
 }
 
 document.addEventListener("DOMContentLoaded", () => {
