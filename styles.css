@@ -172,6 +172,10 @@ body{
     border-radius: 10px;
     padding: 15px 20px 30px;
     height: max-content;
+    /* Sticky scroll */
+    position: -webkit-sticky;
+    position: sticky;
+    top: 20px;
 }
 
 .cart h3{
