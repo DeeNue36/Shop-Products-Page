@@ -1,5 +1,5 @@
-let cartCount = 0; // Global variable to keep track of the cart count
-const cart = {};
+let cartCount = 0; // Global variable to keep track of the cart count(Your cart(0))
+const cart = {}; // Object to store product quantities
 
 fetch('./assets/data.json')
 .then(response => response.json())
@@ -62,165 +62,106 @@ fetch('./assets/data.json')
 });
 
 function handleAddToCart(event) {
-    const id = parseInt(event.target.parentElement.getAttribute('data-id'));
+    // const id = parseInt(event.target.parentElement.getAttribute('data-id'));
+    // updateCartCount(id, 'increase');
+    // toggleButtonState(event.target, true);
+
+    const target = event.target;
+    //checks if the event target is an image and if so it targets the parent element of the image which is the add to cart button, otherwise it uses the event target itself
+    const button = target.tagName === 'IMG'? target.parentNode : target;
+    const id = parseInt(button.closest('.product-cards').getAttribute('data-id'));
+    console.log(id);
     updateCartCount(id, 'increase');
-    toggleButtonState(event.target, true);
+    toggleButtonState(button, true); //toggles button state from add to cart to increment & decrement button
 }
 
-function toggleButtonState(button, isVisible) {
-    button.style.display = isVisible ? 'none' : 'flex';
-    const quantityDiv = button.closest('.product-cards').querySelector('.quantity');
-    quantityDiv.style.display = isVisible ? 'flex' : 'none';
-    const imageBorder = button.closest('.product-cards').querySelector('.product-img');
-    imageBorder.style.border = isVisible ? '2px dashed #c73a0f' : 'none';
-}
+// function changeButtonState(event, id) {
+//     //used to identify the specific button that was clicked
+//     // event.target refers to the element that triggered the event
+//     const button = event.target;
 
+//     //Finds the nearest product cards container that encloses the button that is clicked.
+//     //When a button is clicked find the nearest product cards container
+//     const productCard = button.closest('.product-cards');
 
-// function handleAddToCart(event) {
+//     //searches the product-cards container for the element that has the class "quantity"
+//     const quantityDiv = productCard.querySelector('.quantity');
     
-//     const id = parseInt(event.target.parentElement.getAttribute('data-id'));
-    
+//     //Selects the product image in the product cards container
+//     const imageBorder = productCard.querySelector('.product-img');
 
-//     // console.log(id);
-//     // const quantityValue = 
-//     // cartCount++;
-//     updateCartCount(id, 'increase');
-//     changeButtonState(event, id);
-
-//     // const addToCartBtn = productCard.querySelector('.add-product');
-//     // const increaseButton = quantityDiv.querySelector('.increase-quantity');
-//     // const decreaseButton = quantityDiv.querySelector('.decrease-quantity');
-//     // const quantityValue = quantityDiv.querySelector('.quantity-value');
-
-//     // increaseButton.addEventListener('click', () => {
-//     //     cartCount++;
-//     //     updateCartCount();
-//     //     quantityValue.innerText = parseInt(quantityValue.innerText) + 1;
-//     // });
-
-//     // decreaseButton.addEventListener('click', () => {
-//     //     const currentQuantity = parseInt(quantityValue.innerText);
-//     //     if (currentQuantity > 1) {
-//     //         cartCount--;
-//     //         updateCartCount();
-//     //         quantityValue.innerText = currentQuantity - 1;
-//     //     } else {
-//     //         quantityDiv.style.display = 'none';
-//     //         button.style.display = 'flex';
-//     //         imageBorder.style.border = 'none';
-//     //         cartCount--;
-//     //         updateCartCount();
-//     //     }
-//     // });
-
-//     // const cartAmount = document.getElementById('cart-quantity');
-
-//     // let cartValue = 0;
-
-//     // addToCartBtn.addEventListener('click', (event) =>{
-//     //     const id = parseInt(event.target.getAttribute('data-id'));
-//     //     console.log(cartValue, event, id);
-//     //     cartValue++;
-//     //     cartAmount.innerText = cartValue;   
-//     // });
-
-//     // let quantity = 1;
-    
-//     // increaseButton.addEventListener('click', () => {
-//     //     quantity++;
-//     //     quantityValue.innerText = quantity;
-//     // });
-
-//     // decreaseButton.addEventListener('click', () => {
-//     //     if (quantity > 1) {
-//     //         quantity--;
-//     //         quantityValue.innerText = quantity;
-//     //     } else {
-//     //         quantityDiv.style.display = 'none';
-//     //         button.style.display = 'flex';
-//     //         imageBorder.style.border = 'none';
-//     //     }
-//     // });
+//     const value = cart[id] || 0;
+//     console.log(value);
+//     if (value >=1){
+//         // hide add to cart button and display the increment & decrement button on click
+//         button.style.display = 'none';
+//         quantityDiv.style.display = 'flex';
+//         imageBorder.style.border = '2px dashed #c73a0f';
+//     }
+//     else{
+//         button.style.display = 'flex';
+//         quantityDiv.style.display = 'none';
+//         imageBorder.style.border = 'none';
+//     }
 // }
 
-function changeButtonState(event, id) {
-    //used to identify the specific button that was clicked
-    // event.target refers to the element that triggered the event
-    const button = event.target;
-
-    //Finds the nearest product cards container that encloses the button that is clicked.
-    //When a button is clicked find the nearest product cards container
-    const productCard = button.closest('.product-cards');
-
-    //searches the product-cards container for the element that has the class "quantity"
-    const quantityDiv = productCard.querySelector('.quantity');
-    
-    //Selects the product image in the product cards container
-    const imageBorder = productCard.querySelector('.product-img');
-
-    const value = cart[id] || 0;
-    console.log(value);
-    if (value >=1){
-        // hide add to cart button and display the increment & decrement button on click
-        button.style.display = 'none';
-        quantityDiv.style.display = 'flex';
-        imageBorder.style.border = '2px dashed #c73a0f';
-    }
-    else{
-        button.style.display = 'flex';
-        quantityDiv.style.display = 'none';
-        imageBorder.style.border = 'none';
-    }
-}
-
+//Handles increasing quantity on "+" button click
 function handleIncreaseQuantity(event) {
-    // const id = parseInt(event.target.closest('.product-cards').getAttribute('data-id'));
-    // // cartCount++;
-    // updateCartCount(id, 'increase');
     const id = parseInt(event.target.closest('.product-cards').getAttribute('data-id'));
     updateCartCount(id, 'increase');
-
 }
 
+//Handles increasing quantity on "-" button click
 function handleDecreaseQuantity(event) {
-    // const id = parseInt(event.target.closest('.product-cards').getAttribute('data-id'));
-    // // cartCount--;
-    // updateCartCount(id, 'decrease');
-    // changeButtonState(id);
     const id = parseInt(event.target.closest('.product-cards').getAttribute('data-id'));
     updateCartCount(id, 'decrease');
     const button = event.target.closest('.product-cards').querySelector('.add-product');
     if (cart[id] === 0) {
-        toggleButtonState(button, false);
+        toggleButtonState(button, false); //reverts button back to the add to cart button
     }
 }
 
-function updateCartCount(id, operation, quantity=1) {
+//Update cart count(Your Cart(0)) and quantity(increment & decrement button value)
+function updateCartCount(id, operation, quantity = 1) {
+    // cart and cartCount are global variables
     const prevValue = cart[id] || 0;
+
     let value = prevValue;
-    // console.log(id, operation, cart);
+
     if(operation === 'increase') {
         value += quantity;
-        cartCount = cartCount + quantity;
+        cartCount += quantity;
+        // cartCount = cartCount + quantity;
     }
     else if(value > 0 && operation === 'decrease') {
         value -= quantity;
-        cartCount = cartCount - quantity;
+        cartCount -= quantity;
+        // cartCount = cartCount - quantity;
     }
     cart[id] = value;
     // console.log(cartCount, operation, value);
 
-    //Cart value
+    //Update cart value
     const cartAmount = document.getElementById('cart-quantity');
     cartAmount.innerText = cartCount;
 
+    //Update quantity value(increment & decrement button)
     const productCards = document.querySelector(`.product-cards[data-id='${id}']`);
-    // console.log(productCards, id);
-
-    //increment & decrement button value
+    //increment & decrement span value
     const quantityAmount = productCards.querySelector('#quantity-value');
-    // console.log(quantityAmount);
+    // const quantityAmount = document.getElementById('quantity-value');
     quantityAmount.innerText = value;
+}
+
+//Toggle button states
+function toggleButtonState(button, isVisible) {
+    button.style.display = isVisible ? 'none' : 'flex';
+
+    const quantityDiv = button.closest('.product-cards').querySelector('.quantity');
+    quantityDiv.style.display = isVisible ? 'flex' : 'none';
+
+    const imageBorder = button.closest('.product-cards').querySelector('.product-img');
+    imageBorder.style.border = isVisible ? '2px dashed #c73a0f' : 'none';
 }
 
 document.addEventListener("DOMContentLoaded", () => {
