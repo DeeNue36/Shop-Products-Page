@@ -30,6 +30,7 @@ body{
     background-size: cover;
     background-position: center center;
     background-attachment: fixed;
+    cursor: default;
     /* background-color: var(--rose-variant-two); */
 }
 
@@ -178,7 +179,7 @@ body{
     top: 20px;
 }
 
-.cart h3{
+.cart h3:nth-child(1){
     color: var(--primary-color-one);
 }
 
@@ -190,4 +191,110 @@ body{
 .empty-cart-message {
     text-align: center;
     font-size: 14px;
+}
+
+.added-products-container {
+    margin-top: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--rose-variant-two);
+}
+
+.added-products{
+    margin-bottom: 15px;
+}
+
+.added-product-name{
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.quantity-and-prices{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.added-quantity{
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--primary-color-one)
+}
+
+.added-price{
+    margin-left: 12px;
+}
+
+.multiplied-price{
+    margin-left: 12px;
+    font-weight: 700;
+}
+
+.added-price, .multiplied-price{
+    font-size: 14.5px;
+    color: var(--rose-variant-three);
+}
+
+.remove-product{
+    outline: none;
+    border: 1px solid #CAAFA7;
+    border-radius: 50%;
+    background-color: transparent;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+}
+
+.remove-icon{
+    fill: #CAAFA7;
+    display: block;
+    margin: 0 auto;
+}
+
+.order-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 25px;
+}
+
+.order-total p{
+    font-size: 14px;
+}
+
+.checkout{
+    display: flex;
+    flex-direction: column;
+    margin-top: 25px;
+}
+
+.carbon-neutral{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+    background-color: var(--rose-variant-one);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    cursor: default;
+}
+
+.carbon-neutral-icon{
+    fill: #1EA575;
+    margin-right: 5px;
+}
+
+.confirm-order{
+    background-color: var(--primary-color-one);
+    outline: none;
+    border: none;
+    border-radius: 25px;
+    color: #fff;
+    font-family: 'Red Hat Text', sans-serif;
+    letter-spacing: 0.5px;
+    font-size: 15px; 
+    padding: 12px;
+    cursor: pointer; 
 }
