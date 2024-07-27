@@ -48,7 +48,7 @@ fetch('./assets/data.json')
 
     // Add event listeners for dynamically added elements
     document.querySelectorAll('.add-product').forEach(button => {
-        button.addEventListener('click', handleAddToCart);
+        button.addEventListener('click',handleAddToCart);
     });
 
     document.querySelectorAll('.increase-quantity').forEach(button => {
@@ -67,12 +67,13 @@ function handleAddToCart(event) {
     // toggleButtonState(event.target, true);
 
     const target = event.target;
-    //checks if the event target is an image and if so it targets the parent element of the image which is the add to cart button, otherwise it uses the event target itself
+    //checks if the event target is an image and if so it targets the parent element of the image which is the add to cart button, otherwise it uses the event target itself which is the button
     const button = target.tagName === 'IMG'? target.parentNode : target;
     const id = parseInt(button.closest('.product-cards').getAttribute('data-id'));
     console.log(id);
     updateCartCount(id, 'increase');
     toggleButtonState(button, true); //toggles button state from add to cart to increment & decrement button
+    displayAddedProducts();
 }
 
 // function changeButtonState(event, id) {
@@ -164,9 +165,76 @@ function toggleButtonState(button, isVisible) {
     imageBorder.style.border = isVisible ? '2px dashed #c73a0f' : 'none';
 }
 
+//Display added products in cart
+function displayAddedProducts() {
+    fetch('./assets/data.json')
+      .then(response => response.json())
+      .then(data => {
+        const cartContents = document.querySelector('.cart-contents');
+        cartContents.innerHTML = ''; // clear cart-contents
+  
+        Object.keys(cart).forEach((id) => {
+        // console.log('Searching for product with id:', id);
+        const product = data.find((item) => item.id == parseInt(id));  
+        // console.log('Product found:', product);
+          if (product) {
+            const html = `
+              <div class="added-products-container">
+                <div class="added-products">
+                  <h5 class="added-product-name">${product.name}</h5>
+                  <div class="quantity-and-prices">
+                    <span class="added-quantity">${cart[id]}x</span>
+                    <span class="added-price">@ $${(product.price).toFixed(2)}</span>
+                    <span class="multiplied-price">$${(cart[id] * product.price).toFixed(2)}</span>
+                  </div>
+                </div>
+                <div class="remove-container">
+                  <button type="button" class="remove-product">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="remove-icon" id="icon-remove" width="15" height="11" viewBox="0 0 10 10">
+                      <path d="M8.375 9.375 5 6 1.625 9.375l-1-1L4 5 .625 1.625l1-1L5 4 8.375.625l1 1L6 5l3.375 3.375-1 1Z" fill-rule="evenodd"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              </div>
+            `;
+            cartContents.innerHTML += html;
+          } else {
+            console.log('Product not found!');
+          }
+        });
+      })
+    .catch(error => console.error('Error fetching data:', error));
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     // Additional initialization if necessary
 });
+
+{/* <div class="order-total">
+                <p>
+                    Order Total
+                </p>
+
+                <h3 class="total-price">
+                    $${(cart[id] * product.price).toFixed(2)}
+                </h3>
+              </div>
+
+              <div class="checkout">
+
+                <span class="carbon-neutral">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="carbon-neutral-icon" width="21" height="20" viewBox="0 0 21 20">
+                        <path d="M8 18.75H6.125V17.5H8V9.729L5.803 8.41l.644-1.072 2.196 1.318a1.256 1.256 0 0 1 .607 1.072V17.5A1.25 1.25 0 0 1 8 18.75Z" fill-rule="evenodd" />
+                        <path d="M14.25 18.75h-1.875a1.25 1.25 0 0 1-1.25-1.25v-6.875h3.75a2.498 2.498 0 0 0 2.488-2.747 2.594 2.594 0 0 0-2.622-2.253h-.99l-.11-.487C13.283 3.56 11.769 2.5 9.875 2.5a3.762 3.762 0 0 0-3.4 2.179l-.194.417-.54-.072A1.876 1.876 0 0 0 5.5 5a2.5 2.5 0 1 0 0 5v1.25a3.75 3.75 0 0 1 0-7.5h.05a5.019 5.019 0 0 1 4.325-2.5c2.3 0 4.182 1.236 4.845 3.125h.02a3.852 3.852 0 0 1 3.868 3.384 3.75 3.75 0 0 1-3.733 4.116h-2.5V17.5h1.875v1.25Z" fill-rule="evenodd" />
+                    </svg>
+                    This is a&nbsp;<b>carbon-neutral</b>&nbsp;delivery
+                </span>
+
+                <button type="button" class="confirm-order">
+                    Confirm Order
+                </button> */}
 
 // document.addEventListener("DOMContentLoaded", ()=>{
 //     const quantityBtn = document.getElementById('quantities');
