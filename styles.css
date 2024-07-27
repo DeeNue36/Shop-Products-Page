@@ -212,7 +212,6 @@ body{
 
 .quantity-and-prices{
     display: flex;
-    justify-content: space-between;
     align-items: center;
 }
 
