@@ -125,6 +125,8 @@ function handleDecreaseQuantity(event) {
 //Update cart count(Your Cart(0)) and quantity(increment & decrement button value)
 function updateCartCount(id, operation, quantity = 1) {
     // cart and cartCount are global variables
+    //cart is used to store the value of the product quantities being added
+    //cartCount is used to keep track of the cart count (Your cart(0,1,2,etc))
     const prevValue = cart[id] || 0;
 
     let value = prevValue;
@@ -142,13 +144,13 @@ function updateCartCount(id, operation, quantity = 1) {
     cart[id] = value;
     // console.log(cartCount, operation, value);
 
-    //Update cart value
+    //Update cart value i.e the html element Your cart(0)
     const cartAmount = document.getElementById('cart-quantity');
     cartAmount.innerText = cartCount;
 
-    //Update quantity value(increment & decrement button)
+    //Update quantity value(increment & decrement button) by first calling the parent element with its data-id
     const productCards = document.querySelector(`.product-cards[data-id='${id}']`);
-    //increment & decrement span value
+    //increment & decrement button span value
     const quantityAmount = productCards.querySelector('#quantity-value');
     // const quantityAmount = document.getElementById('quantity-value');
     quantityAmount.innerText = value;
