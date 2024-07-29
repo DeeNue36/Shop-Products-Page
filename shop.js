@@ -99,22 +99,7 @@ function handleDecreaseQuantity(event) {
     else{
         displayAddedProducts();
     }
-
-    //displays empty cart message once cartCount(Your Cart(0,1,2,3)) is exactly Your cart(0) i.e when there is no product in the cart
-    if (cartCount === 0){
-        const cartContents = document.querySelector('.cart-contents');
-        cartContents.innerHTML = `
-            <div class="cart-contents" id="cart-contents">
-                <img src="assets/images/illustration-empty-cart.svg"
-                    class="empty-cart"
-                    alt="empty-cart"
-                >
-                <p class="empty-cart-message">
-                    Your added items will appear here
-                </p>
-            </div>
-        `;
-    }
+    emptyCartMessage();
 }
 
 //Update cart count(Your Cart(0)) and quantity(increment & decrement button value)
@@ -163,6 +148,24 @@ function toggleButtonState(button, isVisible) {
     imageBorder.style.border = isVisible ? '2px dashed #c73a0f' : 'none';
 }
 
+//displays empty cart message once cartCount(Your Cart(0,1,2,3)) is exactly Your cart(0) i.e when there is no product in the cart
+function emptyCartMessage() {
+    if (cartCount === 0){
+        const cartContents = document.querySelector('.cart-contents');
+        cartContents.innerHTML = `
+            <div class="cart-contents" id="cart-contents">
+                <img src="assets/images/illustration-empty-cart.svg"
+                    class="empty-cart"
+                    alt="empty-cart"
+                >
+                <p class="empty-cart-message">
+                    Your added items will appear here
+                </p>
+            </div>
+        `;
+    }
+}
+
 //Display added products in cart
 function displayAddedProducts() {
     fetch('./assets/data.json')
@@ -196,10 +199,27 @@ function displayAddedProducts() {
                         </div>
                     </div>
                 `;
-                cartContents.innerHTML += html;    
-            }
-        }
+                cartContents.innerHTML += html;   
+                
+                // Add event listener to remove-product button
+                document.addEventListener('click', (event) => {
+                    if (event.target.closest('.remove-container')) {
+                        const id = event.target.closest('.added-products-container').getAttribute('data-id');
+                        updateCartCount(id, 'decrease', cart[id]); // Remove all quantities of the product
+                        event.target.closest('.added-products-container').remove(); // Remove the container from the DOM
+                        displayAddedProducts(); // Update the cart contents
 
+                        // Change the button of the deleted product back to "Add to Cart"
+                        const productCards = document.querySelector(`.product-cards[data-id="${id}"]`);
+                        const addToCartButton = productCards.querySelector('.add-product');
+                        toggleButtonState(addToCartButton, false);
+
+                        emptyCartMessage();
+
+                    }
+                });
+            }
+        } 
         else {
             console.log('Product not found!');
         }
