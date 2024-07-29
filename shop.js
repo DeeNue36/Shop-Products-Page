@@ -76,49 +76,44 @@ function handleAddToCart(event) {
     displayAddedProducts();
 }
 
-// function changeButtonState(event, id) {
-//     //used to identify the specific button that was clicked
-//     // event.target refers to the element that triggered the event
-//     const button = event.target;
-
-//     //Finds the nearest product cards container that encloses the button that is clicked.
-//     //When a button is clicked find the nearest product cards container
-//     const productCard = button.closest('.product-cards');
-
-//     //searches the product-cards container for the element that has the class "quantity"
-//     const quantityDiv = productCard.querySelector('.quantity');
-    
-//     //Selects the product image in the product cards container
-//     const imageBorder = productCard.querySelector('.product-img');
-
-//     const value = cart[id] || 0;
-//     console.log(value);
-//     if (value >=1){
-//         // hide add to cart button and display the increment & decrement button on click
-//         button.style.display = 'none';
-//         quantityDiv.style.display = 'flex';
-//         imageBorder.style.border = '2px dashed #c73a0f';
-//     }
-//     else{
-//         button.style.display = 'flex';
-//         quantityDiv.style.display = 'none';
-//         imageBorder.style.border = 'none';
-//     }
-// }
-
+//Toggles button state from add to cart to increment & decrement button
 //Handles increasing quantity on "+" button click
 function handleIncreaseQuantity(event) {
     const id = parseInt(event.target.closest('.product-cards').getAttribute('data-id'));
     updateCartCount(id, 'increase');
+    displayAddedProducts();
 }
 
-//Handles increasing quantity on "-" button click
+//Handles decreasing quantity on "-" button click
 function handleDecreaseQuantity(event) {
     const id = parseInt(event.target.closest('.product-cards').getAttribute('data-id'));
     updateCartCount(id, 'decrease');
     const button = event.target.closest('.product-cards').querySelector('.add-product');
+
     if (cart[id] === 0) {
         toggleButtonState(button, false); //reverts button back to the add to cart button
+        const cartContents = document.querySelector('.cart-contents');
+        const addedProductsContainer = cartContents.querySelector(`.added-products-container[data-id="${id}"]`);
+        addedProductsContainer.remove(); // remove the container from the DOM
+    }
+    else{
+        displayAddedProducts();
+    }
+
+    //displays empty cart message once cartCount(Your Cart(0,1,2,3)) is exactly Your cart(0) i.e when there is no product in the cart
+    if (cartCount === 0){
+        const cartContents = document.querySelector('.cart-contents');
+        cartContents.innerHTML = `
+            <div class="cart-contents" id="cart-contents">
+                <img src="assets/images/illustration-empty-cart.svg"
+                    class="empty-cart"
+                    alt="empty-cart"
+                >
+                <p class="empty-cart-message">
+                    Your added items will appear here
+                </p>
+            </div>
+        `;
     }
 }
 
@@ -127,7 +122,8 @@ function updateCartCount(id, operation, quantity = 1) {
     // cart and cartCount are global variables
     //cart is used to store the value of the product quantities being added
     //cartCount is used to keep track of the cart count (Your cart(0,1,2,etc))
-    const prevValue = cart[id] || 0;
+
+    const prevValue = cart[id] || 0; //retrieves the previous quantity of the product from the cart object using the id or the previous value is 0
 
     let value = prevValue;
 
@@ -141,16 +137,16 @@ function updateCartCount(id, operation, quantity = 1) {
         cartCount -= quantity;
         // cartCount = cartCount - quantity;
     }
-    cart[id] = value;
+    cart[id] = value; //updates the object cart with the new value
     // console.log(cartCount, operation, value);
 
     //Update cart value i.e the html element Your cart(0)
     const cartAmount = document.getElementById('cart-quantity');
     cartAmount.innerText = cartCount;
 
-    //Update quantity value(increment & decrement button) by first calling the parent element with its data-id
+    //Update the quantity value(increment & decrement button) by first calling the parent element with its data-id
     const productCards = document.querySelector(`.product-cards[data-id='${id}']`);
-    //increment & decrement button span value
+    //using the parent element with its data-id we call the increment & decrement button and update its span value
     const quantityAmount = productCards.querySelector('#quantity-value');
     // const quantityAmount = document.getElementById('quantity-value');
     quantityAmount.innerText = value;
@@ -177,38 +173,42 @@ function displayAddedProducts() {
   
         Object.keys(cart).forEach((id) => {
         // console.log('Searching for product with id:', id);
-        const product = data.find((item) => item.id == parseInt(id));  
-        // console.log('Product found:', product);
-          if (product) {
-            const html = `
-              <div class="added-products-container">
-                <div class="added-products">
-                  <h5 class="added-product-name">${product.name}</h5>
-                  <div class="quantity-and-prices">
-                    <span class="added-quantity">${cart[id]}x</span>
-                    <span class="added-price">@ $${(product.price).toFixed(2)}</span>
-                    <span class="multiplied-price">$${(cart[id] * product.price).toFixed(2)}</span>
-                  </div>
-                </div>
-                <div class="remove-container">
-                  <button type="button" class="remove-product">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="remove-icon" id="icon-remove" width="15" height="11" viewBox="0 0 10 10">
-                      <path d="M8.375 9.375 5 6 1.625 9.375l-1-1L4 5 .625 1.625l1-1L5 4 8.375.625l1 1L6 5l3.375 3.375-1 1Z" fill-rule="evenodd"/>
-                    </svg>
-                  </button>
-                </div>
-              </div>
+        if (cart[id] > 0) {
+            const product = data.find((item) => item.id == parseInt(id));  
+            // console.log('Product found:', product);
+            if (product) {
+                const html = `
+                    <div class="added-products-container" data-id="${id}">
+                        <div class="added-products">
+                            <h5 class="added-product-name">${product.name}</h5>
+                            <div class="quantity-and-prices">
+                                <span class="added-quantity">${cart[id]}x</span>
+                                <span class="added-price">@ $${(product.price).toFixed(2)}</span>
+                                <span class="multiplied-price">$${(cart[id] * product.price).toFixed(2)}</span>
+                            </div>
+                        </div>
+                        <div class="remove-container">
+                            <button type="button" class="remove-product">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="remove-icon" id="icon-remove" width="15" height="11" viewBox="0 0 10 10">
+                                <path d="M8.375 9.375 5 6 1.625 9.375l-1-1L4 5 .625 1.625l1-1L5 4 8.375.625l1 1L6 5l3.375 3.375-1 1Z" fill-rule="evenodd"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                cartContents.innerHTML += html;    
+            }
+        }
 
-              </div>
-            `;
-            cartContents.innerHTML += html;
-          } else {
+        else {
             console.log('Product not found!');
-          }
+        }
         });
       })
     .catch(error => console.error('Error fetching data:', error));
 }
+
+  
 
 document.addEventListener("DOMContentLoaded", () => {
     // Additional initialization if necessary
