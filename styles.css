@@ -250,6 +250,10 @@ body{
     margin: 0 auto;
 }
 
+.checkout-container{
+    display: none;
+}
+
 .order-total {
     display: flex;
     justify-content: space-between;
