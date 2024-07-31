@@ -1,5 +1,6 @@
 let cartCount = 0; // Global variable to keep track of the cart count(Your cart(0))
 const cart = {}; // Object to store product quantities
+const productPrice = {}; //Object which stores the product prices
 
 fetch('./assets/data.json')
 .then(response => response.json())
@@ -8,6 +9,8 @@ fetch('./assets/data.json')
     let productElements = document.getElementById("products");
     let html = "";
     data.forEach(products => {
+        productPrice[products.id] = products.price; //gets the product id and its equivalent price and stores it in productPrice
+        console.log(productPrice);
         html += 
         `
             <div class="product-cards" data-id='${products.id}'>
@@ -61,6 +64,17 @@ fetch('./assets/data.json')
 
 });
 
+//Toggle button states
+function toggleButtonState(button, isVisible) {
+    button.style.display = isVisible ? 'none' : 'flex';
+
+    const quantityDiv = button.closest('.product-cards').querySelector('.quantity');
+    quantityDiv.style.display = isVisible ? 'flex' : 'none';
+
+    const imageBorder = button.closest('.product-cards').querySelector('.product-img');
+    imageBorder.style.border = isVisible ? '2px dashed #c73a0f' : 'none';
+}
+
 function handleAddToCart(event) {
     // const id = parseInt(event.target.parentElement.getAttribute('data-id'));
     // updateCartCount(id, 'increase');
@@ -74,6 +88,7 @@ function handleAddToCart(event) {
     updateCartCount(id, 'increase');
     toggleButtonState(button, true); //toggles button state from add to cart to increment & decrement button
     displayAddedProducts();
+    onCartUpdate();
 }
 
 //Toggles button state from add to cart to increment & decrement button
@@ -82,6 +97,7 @@ function handleIncreaseQuantity(event) {
     const id = parseInt(event.target.closest('.product-cards').getAttribute('data-id'));
     updateCartCount(id, 'increase');
     displayAddedProducts();
+    onCartUpdate();
 }
 
 //Handles decreasing quantity on "-" button click
@@ -99,7 +115,7 @@ function handleDecreaseQuantity(event) {
     else{
         displayAddedProducts();
     }
-    emptyCartMessage();
+    onCartUpdate();
 }
 
 //Update cart count(Your Cart(0)) and quantity(increment & decrement button value)
@@ -114,20 +130,20 @@ function updateCartCount(id, operation, quantity = 1) {
 
     if(operation === 'increase') {
         value += quantity;
-        cartCount += quantity;
+        // cartCount += quantity; => now handled by onCartUpdate function
         // cartCount = cartCount + quantity;
     }
     else if(value > 0 && operation === 'decrease') {
         value -= quantity;
-        cartCount -= quantity;
+        // cartCount -= quantity; => now handled by onCartUpdate function
         // cartCount = cartCount - quantity;
     }
     cart[id] = value; //updates the object cart with the new value
     // console.log(cartCount, operation, value);
 
-    //Update cart value i.e the html element Your cart(0)
-    const cartAmount = document.getElementById('cart-quantity');
-    cartAmount.innerText = cartCount;
+    //Update cart value i.e the html element Your cart(0) => now handled by onCartUpdate function
+    // const cartAmount = document.getElementById('cart-quantity');
+    // cartAmount.innerText = cartCount; 
 
     //Update the quantity value(increment & decrement button) by first calling the parent element with its data-id
     const productCards = document.querySelector(`.product-cards[data-id='${id}']`);
@@ -137,20 +153,38 @@ function updateCartCount(id, operation, quantity = 1) {
     quantityAmount.innerText = value;
 }
 
-//Toggle button states
-function toggleButtonState(button, isVisible) {
-    button.style.display = isVisible ? 'none' : 'flex';
+function onCartUpdate(){
+    const checkoutContainer =  document.getElementById('checkout-container');
 
-    const quantityDiv = button.closest('.product-cards').querySelector('.quantity');
-    quantityDiv.style.display = isVisible ? 'flex' : 'none';
+    let totalPrice = 0;
+    let cartCount = 0; //cartCount is re-initialized in this block to prevent any issues with the global variable cartCount
 
-    const imageBorder = button.closest('.product-cards').querySelector('.product-img');
-    imageBorder.style.border = isVisible ? '2px dashed #c73a0f' : 'none';
+    //loops or iterates through the keys of the cart object and gets the id's
+    for(const id of Object.keys(cart)){
+        const quantity = cart[id]; // gets each of the products in the cart using their id
+        const price = productPrice[id]; // gets the price of each of the products using their id's
+        totalPrice += quantity * price; // calculates the overall total price of all products in the cart
+        cartCount += quantity; // gets the number of products in the cart and used to update the html element "Your Cart(0)""
+    }
+
+    if (cartCount < 1){
+        checkoutContainer.style.display = 'none';
+        emptyCartMessage();
+    }
+    else{
+        checkoutContainer.style.display = 'block';
+    }
+    const totalPriceElement = document.getElementById('total-price-value');
+    totalPriceElement.textContent = totalPrice.toFixed(2);
+
+    //Update cart value i.e the html element Your cart(0)
+    const cartAmount = document.getElementById('cart-quantity');
+    cartAmount.innerText = cartCount;
 }
 
 //displays empty cart message once cartCount(Your Cart(0,1,2,3)) is exactly Your cart(0) i.e when there is no product in the cart
 function emptyCartMessage() {
-    if (cartCount === 0){
+    if (cartCount === 0 || Object.values(cart).every(value => value === 0)) {
         const cartContents = document.querySelector('.cart-contents');
         cartContents.innerHTML = `
             <div class="cart-contents" id="cart-contents">
@@ -207,14 +241,16 @@ function displayAddedProducts() {
                         const id = event.target.closest('.added-products-container').getAttribute('data-id');
                         updateCartCount(id, 'decrease', cart[id]); // Remove all quantities of the product
                         event.target.closest('.added-products-container').remove(); // Remove the container from the DOM
-                        displayAddedProducts(); // Update the cart contents
 
                         // Change the button of the deleted product back to "Add to Cart"
                         const productCards = document.querySelector(`.product-cards[data-id="${id}"]`);
                         const addToCartButton = productCards.querySelector('.add-product');
                         toggleButtonState(addToCartButton, false);
 
-                        emptyCartMessage();
+                        // Checks if the cart is empty and displays a message
+                        // emptyCartMessage(); => this is now being called in the onCartUpdate function
+                        onCartUpdate();
+
 
                     }
                 });
@@ -228,60 +264,9 @@ function displayAddedProducts() {
     .catch(error => console.error('Error fetching data:', error));
 }
 
-  
-
 document.addEventListener("DOMContentLoaded", () => {
     // Additional initialization if necessary
 });
 
-{/* <div class="order-total">
-                <p>
-                    Order Total
-                </p>
-
-                <h3 class="total-price">
-                    $${(cart[id] * product.price).toFixed(2)}
-                </h3>
-              </div>
-
-              <div class="checkout">
-
-                <span class="carbon-neutral">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="carbon-neutral-icon" width="21" height="20" viewBox="0 0 21 20">
-                        <path d="M8 18.75H6.125V17.5H8V9.729L5.803 8.41l.644-1.072 2.196 1.318a1.256 1.256 0 0 1 .607 1.072V17.5A1.25 1.25 0 0 1 8 18.75Z" fill-rule="evenodd" />
-                        <path d="M14.25 18.75h-1.875a1.25 1.25 0 0 1-1.25-1.25v-6.875h3.75a2.498 2.498 0 0 0 2.488-2.747 2.594 2.594 0 0 0-2.622-2.253h-.99l-.11-.487C13.283 3.56 11.769 2.5 9.875 2.5a3.762 3.762 0 0 0-3.4 2.179l-.194.417-.54-.072A1.876 1.876 0 0 0 5.5 5a2.5 2.5 0 1 0 0 5v1.25a3.75 3.75 0 0 1 0-7.5h.05a5.019 5.019 0 0 1 4.325-2.5c2.3 0 4.182 1.236 4.845 3.125h.02a3.852 3.852 0 0 1 3.868 3.384 3.75 3.75 0 0 1-3.733 4.116h-2.5V17.5h1.875v1.25Z" fill-rule="evenodd" />
-                    </svg>
-                    This is a&nbsp;<b>carbon-neutral</b>&nbsp;delivery
-                </span>
-
-                <button type="button" class="confirm-order">
-                    Confirm Order
-                </button> */}
-
-// document.addEventListener("DOMContentLoaded", ()=>{
-//     const quantityBtn = document.getElementById('quantities');
-//     // const cartBtn = document.getElementById('add-to-cart');
-//     const decrease = document.querySelector('.decrease-quantity');
-//     const increase = document.querySelector('.increase-quantity');
-//     const quantityValue = document.querySelector('.quantity-value');
-
-//     let a = 1;
-//     increase.addEventListener("click", ()=>{
-//         a++;
-//         // a=(a < 10) ? "0" + a : a;
-//         quantityValue.innerText = a;
-//     });
 
 
-//     decrease.addEventListener("click", ()=>{
-//         if(a > 0){
-//             a--;
-//             // a=(a < 10) ? "0" + a : a;
-//         }
-//         else{
-//             quantityBtn.style.display = "none";
-//             // cartBtn.style.display = "block";
-//         }
-//         quantityValue.innerText = a;
-//     });
-// });
