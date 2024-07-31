@@ -37,6 +37,7 @@
             <h3>
                 Your Cart(<span class="cart-amount" id="cart-quantity">0</span>)
             </h3>
+
             <div class="cart-contents" id="cart-contents">
                 <img src="assets/images/illustration-empty-cart.svg"
                     class="empty-cart"
@@ -46,38 +47,21 @@
                     Your added items will appear here
                 </p>
 
-                <!-- <div class="added-products-container">
-
-                    <div class="added-products">
-                        <h5 class="added-product-name">
-                            Classic Tiramisu
-                        </h5>
-                        <div class="quantity-and-prices">
-                            <span class="added-quantity">1x</span>
-                            <span class="added-price">@ $3.99</span>
-                            <span class="multiplied-price">$3.99</span>
-                        </div>
-                    </div>
-
-                    <div class="remove-container">
-                        <button type="button" class="remove-product">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="remove-icon" id="icon-remove" width="15" height="11" viewBox="0 0 10 10">
-                                <path d="M8.375 9.375 5 6 1.625 9.375l-1-1L4 5 .625 1.625l1-1L5 4 8.375.625l1 1L6 5l3.375 3.375-1 1Z" fill-rule="evenodd"/>
-                            </svg>
-                        </button>
-                    </div>
-                </div> -->
-
             </div>
+
+            <!-- <div class="checkout-container" id="checkout-container">
+
+            </div> -->
             
-            <div class="checkout-container">
+            <div class="checkout-container" id="checkout-container">
                 <div class="order-total">
                     <p>
                         Order Total
                     </p>
 
                     <h3 class="total-price">
-                        $46.50
+                        <span id="currency">$</span>
+                        <span id="total-price-value">0</span>
                     </h3>
                 </div>
 
