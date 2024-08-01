@@ -64,17 +64,6 @@ fetch('./assets/data.json')
 
 });
 
-//Toggle button states
-function toggleButtonState(button, isVisible) {
-    button.style.display = isVisible ? 'none' : 'flex';
-
-    const quantityDiv = button.closest('.product-cards').querySelector('.quantity');
-    quantityDiv.style.display = isVisible ? 'flex' : 'none';
-
-    const imageBorder = button.closest('.product-cards').querySelector('.product-img');
-    imageBorder.style.border = isVisible ? '2px dashed #c73a0f' : 'none';
-}
-
 function handleAddToCart(event) {
     // const id = parseInt(event.target.parentElement.getAttribute('data-id'));
     // updateCartCount(id, 'increase');
@@ -91,7 +80,17 @@ function handleAddToCart(event) {
     onCartUpdate();
 }
 
-//Toggles button state from add to cart to increment & decrement button
+//Toggle button states
+function toggleButtonState(button, isVisible) {
+    button.style.display = isVisible ? 'none' : 'flex';
+
+    const quantityDiv = button.closest('.product-cards').querySelector('.quantity');
+    quantityDiv.style.display = isVisible ? 'flex' : 'none';
+
+    const imageBorder = button.closest('.product-cards').querySelector('.product-img');
+    imageBorder.style.border = isVisible ? '2px dashed #c73a0f' : 'none';
+}
+
 //Handles increasing quantity on "+" button click
 function handleIncreaseQuantity(event) {
     const id = parseInt(event.target.closest('.product-cards').getAttribute('data-id'));
@@ -138,19 +137,19 @@ function updateCartCount(id, operation, quantity = 1) {
         // cartCount -= quantity; => now handled by onCartUpdate function
         // cartCount = cartCount - quantity;
     }
-    cart[id] = value; //updates the object cart with the new value
-    // console.log(cartCount, operation, value);
+
+    cart[id] = value; //updates the cart oject with the new value based on the id of the product 
 
     //Update cart value i.e the html element Your cart(0) => now handled by onCartUpdate function
     // const cartAmount = document.getElementById('cart-quantity');
     // cartAmount.innerText = cartCount; 
 
-    //Update the quantity value(increment & decrement button) by first calling the parent element with its data-id
+    //Update the quantity of the product(increment & decrement button) by first calling the parent element with its data-id
     const productCards = document.querySelector(`.product-cards[data-id='${id}']`);
     //using the parent element with its data-id we call the increment & decrement button and update its span value
     const quantityAmount = productCards.querySelector('#quantity-value');
-    // const quantityAmount = document.getElementById('quantity-value');
-    quantityAmount.innerText = value;
+    // OR const quantityAmount = document.getElementById('quantity-value');
+    quantityAmount.innerText = value; 
 }
 
 function onCartUpdate(){
@@ -163,8 +162,8 @@ function onCartUpdate(){
     for(const id of Object.keys(cart)){
         const quantity = cart[id]; // gets each of the products in the cart using their id
         const price = productPrice[id]; // gets the price of each of the products using their id's
-        totalPrice += quantity * price; // calculates the overall total price of all products in the cart
-        cartCount += quantity; // gets the number of products in the cart and used to update the html element "Your Cart(0)""
+        totalPrice += quantity * price; // calculates the total price of all products in the cart
+        cartCount += quantity; // gets the number of products in the cart and uses it to update the html element "Your Cart(0)"
     }
 
     if (cartCount < 1){
@@ -174,6 +173,8 @@ function onCartUpdate(){
     else{
         checkoutContainer.style.display = 'block';
     }
+
+    //Update total price
     const totalPriceElement = document.getElementById('total-price-value');
     totalPriceElement.textContent = totalPrice.toFixed(2);
 
@@ -209,10 +210,8 @@ function displayAddedProducts() {
         cartContents.innerHTML = ''; // clear cart-contents
   
         Object.keys(cart).forEach((id) => {
-        // console.log('Searching for product with id:', id);
         if (cart[id] > 0) {
             const product = data.find((item) => item.id == parseInt(id));  
-            // console.log('Product found:', product);
             if (product) {
                 const html = `
                     <div class="added-products-container" data-id="${id}">
