@@ -10,7 +10,7 @@ fetch('./assets/data.json')
     let html = "";
     data.forEach(products => {
         productPrice[products.id] = products.price; //gets the product id and its equivalent price and stores it in productPrice
-        console.log(productPrice);
+        // console.log(productPrice);
         html += 
         `
             <div class="product-cards" data-id='${products.id}'>
