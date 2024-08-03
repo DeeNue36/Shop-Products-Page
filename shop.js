@@ -158,12 +158,12 @@ function onCartUpdate(){
     let totalPrice = 0;
     let cartCount = 0; //cartCount is re-initialized in this block to prevent any issues with the global variable cartCount
 
-    //loops or iterates through the keys of the cart object and gets the id's
+    //loops or iterates through the keys of the object cart and gets the id's
     for(const id of Object.keys(cart)){
         const quantity = cart[id]; // gets each of the products in the cart using their id
         const price = productPrice[id]; // gets the price of each of the products using their id's
         totalPrice += quantity * price; // calculates the total price of all products in the cart
-        cartCount += quantity; // gets the number of products in the cart and uses it to update the html element "Your Cart(0)"
+        cartCount += quantity; // gets the number of products in the cart and updates+ the html element "Your Cart(0)"
     }
 
     if (cartCount < 1){
@@ -262,6 +262,17 @@ function displayAddedProducts() {
       })
     .catch(error => console.error('Error fetching data:', error));
 }
+
+const confirmOrder = document.getElementById('confirm-order');
+confirmOrder.addEventListener('click', () => {
+    alert('Order has been confirmed');
+    // window.location.reload();
+
+    // Clear the cart
+    const cartContents = document.querySelector('.cart-contents');
+    cartContents.innerHTML = ''; // clear cart-contents
+    emptyCartMessage();
+});
 
 document.addEventListener("DOMContentLoaded", () => {
     // Additional initialization if necessary
