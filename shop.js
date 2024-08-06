@@ -1,16 +1,17 @@
-let cartCount = 0; // Global variable to keep track of the cart count(Your cart(0))
-const cart = {}; // Object to store product quantities
-const productPrice = {}; //Object which stores the product prices
+let cartCount = 0; // Global variable which keeps track of the cart count(Your cart(0))
+const cart = {}; // Global variable object which stores product quantities based on their id
+const productPrice = {}; //Global variable object which stores the product prices defined in data.json
+let data = []; // Global variable which basically stores the array of products in data.json
 
 fetch('./assets/data.json')
 .then(response => response.json())
-.then(data => {
+.then(jsonData => {
+    data = jsonData; //Assigns the fetched data to the global variable "data"
     console.log(data);
     let productElements = document.getElementById("products");
     let html = "";
     data.forEach(products => {
-        productPrice[products.id] = products.price; //gets the product id and its equivalent price and stores it in productPrice
-        // console.log(productPrice);
+        productPrice[products.id] = products.price; //gets the product id, its equivalent price and stores it in productPrice
         html += 
         `
             <div class="product-cards" data-id='${products.id}'>
@@ -50,27 +51,36 @@ fetch('./assets/data.json')
     productElements.innerHTML = html;
 
     // Add event listeners for dynamically added elements
+
+    //passes the parameter 'button' to each of the add to cart buttons
     document.querySelectorAll('.add-product').forEach(button => {
-        button.addEventListener('click',handleAddToCart);
+        //the parameter 'button' then calls the function 'handleAddToCart' when it is clicked 
+        button.addEventListener('click', handleAddToCart);
     });
 
+    //passes the parameter 'button' to each of the plus buttons
     document.querySelectorAll('.increase-quantity').forEach(button => {
+        //the parameter 'button' then calls the function 'handleIncreaseQuantity' when it is clicked
         button.addEventListener('click', handleIncreaseQuantity);
     });
 
+    //passes the parameter 'button' to each of the minus buttons
     document.querySelectorAll('.decrease-quantity').forEach(button => {
+        //the parameter 'button' then calls the function 'handleDecreaseQuantity' when it is clicked
         button.addEventListener('click', handleDecreaseQuantity);
     });
 
 });
 
+//Function for the add to cart button which handles adding products to cart
 function handleAddToCart(event) {
     // const id = parseInt(event.target.parentElement.getAttribute('data-id'));
     // updateCartCount(id, 'increase');
     // toggleButtonState(event.target, true);
 
     const target = event.target;
-    //checks if the event target is an image and if so it targets the parent element of the image which is the add to cart button, otherwise it uses the event target itself which is the button
+
+    //checks if the event targeted is an image and if so it targets the parent element of the image which is the add to cart button, otherwise it uses the event target itself which is the add to cart button
     const button = target.tagName === 'IMG'? target.parentNode : target;
     const id = parseInt(button.closest('.product-cards').getAttribute('data-id'));
     console.log(id);
@@ -80,11 +90,17 @@ function handleAddToCart(event) {
     onCartUpdate();
 }
 
-//Toggle button states
+//Toggle button states and image border
 function toggleButtonState(button, isVisible) {
+    //Button and isVisible have been passed as parameters to the function
+    //Button in this context varies depending on which function toggleButtonState function is called in and has the parameter button
+    //Basically it is used to toggle the visibility of a button and its associated content (mostly the add to cart button)
+    //When the button is clicked in the function it is called in, the button is set to 'none' if isVisible is 'true' and 'flex' if isVisible is 'false'
     button.style.display = isVisible ? 'none' : 'flex';
 
+    //finds the closest element with the class 'product-cards' and queries for the class 'quantity'
     const quantityDiv = button.closest('.product-cards').querySelector('.quantity');
+    //it then sets the display of the class 'quantity' to 'flex' if isVisible is 'true' and 'none' if isVisible is false
     quantityDiv.style.display = isVisible ? 'flex' : 'none';
 
     const imageBorder = button.closest('.product-cards').querySelector('.product-img');
@@ -101,15 +117,20 @@ function handleIncreaseQuantity(event) {
 
 //Handles decreasing quantity on "-" button click
 function handleDecreaseQuantity(event) {
-    const id = parseInt(event.target.closest('.product-cards').getAttribute('data-id'));
-    updateCartCount(id, 'decrease');
-    const button = event.target.closest('.product-cards').querySelector('.add-product');
+    const id = parseInt(event.target.closest('.product-cards').getAttribute('data-id')); //Gets the ID of the closest parent element 'product-card' which is used to identify the specific product in the cart
+    updateCartCount(id, 'decrease'); //decreases the quantity on "-" button click
+    const button = event.target.closest('.product-cards').querySelector('.add-product'); //gets the element with the class 'add-product'(add to cart button) and targets the closest element with the class 'product-cards'
 
+    //Checks if each of the product quantities is 0
     if (cart[id] === 0) {
-        toggleButtonState(button, false); //reverts button back to the add to cart button
+        toggleButtonState(button, false); //the add to cart button now has the property 'display:none' this means the parameter isVisible is 'true' so this reverts back to the add to cart button by setting the property to 'display:flex' which means the parameter isVisible is 'false'
+
+        //Get the element with the class 'cart-contents' which is the div that contains ALL the products added to the cart
         const cartContents = document.querySelector('.cart-contents');
+
+        //Gets the element with the class 'added-products-container' which is the container div of the INDIVIDUAL added products and also gets its ID
         const addedProductsContainer = cartContents.querySelector(`.added-products-container[data-id="${id}"]`);
-        addedProductsContainer.remove(); // remove the container from the DOM
+        addedProductsContainer.remove(); // remove the container of the INDIVIDUAL product from the DOM
     }
     else{
         displayAddedProducts();
@@ -183,6 +204,7 @@ function onCartUpdate(){
     cartAmount.innerText = cartCount;
 }
 
+
 //displays empty cart message once cartCount(Your Cart(0,1,2,3)) is exactly Your cart(0) i.e when there is no product in the cart
 function emptyCartMessage() {
     if (cartCount === 0 || Object.values(cart).every(value => value === 0)) {
@@ -208,7 +230,7 @@ function displayAddedProducts() {
       .then(data => {
         const cartContents = document.querySelector('.cart-contents');
         cartContents.innerHTML = ''; // clear cart-contents
-  
+        // cartContents.textContent = ''; // clear cart-contents
         Object.keys(cart).forEach((id) => {
         if (cart[id] > 0) {
             const product = data.find((item) => item.id == parseInt(id));  
@@ -232,13 +254,14 @@ function displayAddedProducts() {
                         </div>
                     </div>
                 `;
-                cartContents.innerHTML += html;   
+                cartContents.innerHTML += html; 
                 
                 // Add event listener to remove-product button
                 document.addEventListener('click', (event) => {
                     if (event.target.closest('.remove-container')) {
+                        // Remove product from cart by first getting the id
                         const id = event.target.closest('.added-products-container').getAttribute('data-id');
-                        updateCartCount(id, 'decrease', cart[id]); // Remove all quantities of the product
+                        updateCartCount(id, 'decrease', cart[id]); // Remove all quantities of the product and updates the cart
                         event.target.closest('.added-products-container').remove(); // Remove the container from the DOM
 
                         // Change the button of the deleted product back to "Add to Cart"
@@ -264,15 +287,80 @@ function displayAddedProducts() {
 }
 
 const confirmOrder = document.getElementById('confirm-order');
+const modal = document.querySelector('.modal-container');
 confirmOrder.addEventListener('click', () => {
-    alert('Order has been confirmed');
+    // alert('Order has been confirmed');
     // window.location.reload();
+    modal.classList.remove('hide');
+    modal.classList.add('show');
 
-    // Clear the cart
-    const cartContents = document.querySelector('.cart-contents');
-    cartContents.innerHTML = ''; // clear cart-contents
-    emptyCartMessage();
+    // Get the added products from the cart
+    const boughtProducts = Object.keys(cart).map(id => {
+        const product = data.find(item => item.id == parseInt(id));
+        console.log(data);
+        return {
+            id,
+            name: product.name,
+            price: product.price,
+            quantity: cart[id],
+            thumbnail: product.image.thumbnail
+        };
+    });
+    
+    // Populate the modal content
+    const modalContent = document.querySelector('.modal');
+    const html = `
+        <div class="modal-header">
+            <img src="assets/images/icon-order-confirmed.svg" class="check-mark" alt="check-mark">
+            <h2 class="modal-title">Order Confirmed</h2>
+            <p>We hope you enjoy your food!! (&#128521; Desserts)</p>
+        </div> 
+
+        <div class="order-summary">
+            <div class="bought-products-container">
+                ${boughtProducts.map(product => `
+                    <div class="bought-products">
+                        <div class="bought-product-image">
+                            <img src="${product.thumbnail}" class="thumbnail-image" alt="${product.name}-thumbnail">
+                        </div>
+                        
+                        <div class="bought-products-list">
+                            <h5 class="bought-product-name">${product.name}</h5>
+
+                            <div class="bought-quantities-and-prices">
+                                <span class="bought-added-quantity">${product.quantity}x</span>
+                                <span class="product-regular-price">@$${(product.price).toFixed(2)}</span>
+                            </div>
+                        </div>
+                        
+                    </div>
+                
+                <h5 class="bought-product-price">
+                    <span class="currency">$</span>
+                    <span class="bought-product-price-value">${(product.quantity * product.price).toFixed(2)}</span>
+                </h5>
+                <div class="divider"></div>
+                `).join('')}
+            </div>
+            
+            <div class="modal-order-total">
+                <p>Order Total</p>
+                <h3 class="modal-total-price">
+                    <span class="currency">$</span>
+                    <span id="modal-total-value">${boughtProducts.reduce((acc, product) => acc + product.price * product.quantity, 0).toFixed(2)}</span>
+                </h3>
+            </div>
+        </div>
+        <button type="button" class="new-order" id="new-order">
+            Start New Order
+        </button>
+    `;
+    modalContent.innerHTML += html;
+    
 });
+
+
+
 
 document.addEventListener("DOMContentLoaded", () => {
     // Additional initialization if necessary
