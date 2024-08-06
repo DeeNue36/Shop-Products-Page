@@ -313,13 +313,13 @@ body{
     align-items: center;
 }
 
-/* Styles to display/hide modal */
+/* Styles to toggle modal */
 .hide{
-    /* display: none; */
+    display: none;
 }
 
 .show{
-    display: block;
+    display: flex;
 }
 
 /* Modal styling */
@@ -345,40 +345,74 @@ body{
 }
 
 /* Ordered products styling*/
-.bought-products-container{
-    background-color: var(--rose-variant-two);
+.order-summary{
+    margin-top: 32px;
+    background-color: var(--rose-variant-one);
     border-radius: 8px;
     padding: 15px;
 }
 
-.bought-products-list{
-    list-style: none;
+.bought-products-container{
+    display: flex;
+    flex-flow: wrap;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .bought-products{
     display: flex;
 }
 
+.bought-products-list{
+    margin-left: 12px;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-evenly;
+}
+
+.bought-product-image{
+    width: max-content;
+}
+
 .thumbnail-image{
-    width: 12%;
+    width: 4vw;
+    height: 8.5vh;
     border-radius: 5px;
 }
 
-.bought-quantities-and-prices {
-    display: flex;
+.bought-added-quantity {
+    padding-right: 10px;
 }
 
 .bought-added-quantity{
     font-size: var(--font-size-product-names);
 }
 
-/* Order total and price styling*/
-.modal-order-container{
-    display: flex;
-    justify-content: space-between;
+.product-regular-price{
+    font-size: 14.5px;
+    color: var(--rose-variant-three);
 }
 
-.modal-order-container p{
+.bought-product-price{
+    font-size: 1em;
+    margin-bottom: 2px;
+}
+
+.divider{
+    width: 100%;
+    border-bottom: 1.5px solid var(--rose-variant-two);
+    margin: 10px 0;
+}
+
+/* Order total and price styling*/
+.modal-order-total{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.modal-order-total p{
     font-size: 14px;
 }
 
@@ -394,4 +428,5 @@ body{
     padding: 12px 0px;
     border-radius: 20px;
     cursor: pointer;
+    margin-top: 20px;
 }
