@@ -55,7 +55,7 @@
                     </p>
 
                     <h3 class="total-price">
-                        <span id="currency">$</span>
+                        <span class="currency" id="currency">$</span>
                         <span id="total-price-value">0</span>
                     </h3>
                 </div>
@@ -81,37 +81,42 @@
 
     <section class="modal-container hide">
         <div class="modal">
-            <div class="modal-header">
+            <!-- <div class="modal-header">
                 <img src="assets/images/icon-order-confirmed.svg" class="check-mark" alt="check-mark">
                 <h2 class="modal-title">Order Confirmed</h2>
                 <p>We hope you enjoy your food!! (&#128521; Desserts)</p>
             </div> 
             
-            <div class="bought-products-container">
-                <ul class="bought-products-list">
-                    <li class="bought-products">
-                        <img src="assets/images/image-baklava-thumbnail.jpg" class="thumbnail-image" alt="baklava-thumbnail">
+            <div class="order-summary">
 
-                        <div class="bought-products-content">
-                            <h6 class="bought-product-name">Pistachio Baklava</h6>
+                <div class="bought-products-container">
+
+                    <div class="bought-products">
+                        <div class="bought-product-image">
+                            <img src="assets/images/image-baklava-thumbnail.jpg" class="thumbnail-image" alt="baklava-thumbnail">
+                        </div>
+                        
+                        <div class="bought-products-list">
+                            <h5 class="bought-product-name">Pistachio Baklava</h5>
 
                             <div class="bought-quantities-and-prices">
                                 <span class="bought-added-quantity">1x</span>
                                 <span class="product-regular-price">@5.50</span>
-                                <p class="bought-product-price">
-                                    $<span class="bought-product-price-value">10</span>
-                                </p>
                             </div>
-                            
                         </div>
-                        
-                    </li>
-                </ul>
+                    </div>
 
-                <div class="modal-order-container">
+                    <h5 class="bought-product-price">
+                        <span class="currency">$</span>
+                        <span id="bought-product-price-value">0</span>
+                    </h5>
+                </div>
+                
+                <div class="modal-order-total">
                     <p>Order Total</p>
                     <h3 class="modal-total-price">
-                        $<span id="modal-total-value">40</span>
+                        <span class="currency">$</span>
+                        <span id="modal-total-value">0</span>
                     </h3>
                 </div>
 
@@ -119,9 +124,8 @@
 
             <button type="button" class="new-order" id="new-order">
                 Start New Order
-            </button>
-        </div>
-        
+            </button> -->
+        </div>  
     </section>
     
     <script src="shop.js"></script>
