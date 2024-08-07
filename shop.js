@@ -371,6 +371,8 @@ confirmOrder.addEventListener('click', () => {
     
 });
 
+//todo: start a new order when the 'start new order' button is clicked
+//todo: enable the modal to be able to scroll
 
 document.addEventListener("DOMContentLoaded", () => {
     //* Additional initialization if necessary
