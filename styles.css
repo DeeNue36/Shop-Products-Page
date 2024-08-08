@@ -34,7 +34,8 @@ body{
     /* background-color: var(--rose-variant-two); */
 }
 
-/*? Products container -- contains all products & the cart  */
+/** Products container -- contains all products & the cart  */
+
 .products-container{
     margin: 50px 30px 50px 50px;
     display: grid;
@@ -47,7 +48,8 @@ body{
     display: grid;
 }
 
-/*? Product details styling */
+/** Product details styling */
+
 .products{
     display: grid;
     grid-template-columns: auto auto auto;
@@ -73,7 +75,8 @@ body{
     border-radius: 10px;
 }
 
-/*? Add to cart button styling  */
+/** Add to cart button styling  */
+
 .add-product{
     display: flex;
     justify-content: center;
@@ -98,11 +101,13 @@ body{
 }
 
 /** cart image */
+
 .add-product img{
     padding-right: 5px;
 }
 
-/*? Increment & decrement button styling */
+/** Increment & decrement button styling */
+
 .quantity{
     display: none;
     justify-content: space-between;
@@ -117,6 +122,7 @@ body{
 }
 
 /** minus & plus icon containers */
+
 .decrease-quantity, .increase-quantity{
     border-radius: 50%;
     border: none;
@@ -135,7 +141,8 @@ body{
     
 }
 
-/*? '-' & '+' icons styling */
+/** '-' & '+' icons styling */
+
 .minus, .add{
     fill: #fff;
     width: 10px;
@@ -148,12 +155,14 @@ body{
 }
 
 /** button value */
+
 .quantity-value{
     color: #fff;
     pointer-events: none;
 }
 
-/*? Product details styling  */
+/** Product details styling  */
+
 .product-category{
     color: var(--rose-variant-four);
     font-size: 14px;
@@ -176,7 +185,8 @@ body{
     width: max-content;
 }
 
-/*? Cart styling */
+/** Cart styling */
+
 .cart{
     background-color: hsl(0, 0%, 100%);
     border-radius: 10px;
@@ -202,7 +212,8 @@ body{
     font-size: 14px;
 }
 
-/*? Products that have been added to cart styling */
+/** Products that have been added to cart styling */
+
 .added-products-container {
     margin-top: 25px;
     display: flex;
@@ -221,6 +232,7 @@ body{
 }
 
 /** container for the added product quantity, regular price and the total price */
+
 .quantity-and-prices{
     display: flex;
     align-items: center;
@@ -246,7 +258,8 @@ body{
     color: var(--rose-variant-three);
 }
 
-/*? x/delete icon container styling */
+/** x/delete icon container styling */
+
 .remove-product{
     outline: none;
     border: 1px solid #CAAFA7;
@@ -258,13 +271,15 @@ body{
 }
 
 /** x/delete icon */
+
 .remove-icon{
     fill: #CAAFA7;
     display: block;
     margin: 0 auto;
 }
 
-/*? Total price, Delivery & Checkout elements styling */
+/** Total price, Delivery & Checkout elements styling */
+
 .checkout-container{
     display: none;
 }
@@ -287,6 +302,7 @@ body{
 }
 
 /** Delivery element  */
+
 .carbon-neutral{
     display: flex;
     justify-content: center;
@@ -305,6 +321,7 @@ body{
 }
 
 /** Checkout button */
+
 .confirm-order{
     background-color: var(--primary-color-one);
     outline: none;
@@ -318,7 +335,8 @@ body{
     cursor: pointer; 
 }
 
-/*? Modal overlay */
+/** Modal overlay */
+
 .modal-container{
     background-color: rgba(0, 0, 0, 0.5);
     position: fixed;
@@ -330,7 +348,8 @@ body{
     align-items: center;
 }
 
-/*? Styles to toggle modal display */
+/** Styles to toggle modal display */
+
 .hide{
     display: none;
 }
@@ -339,19 +358,50 @@ body{
     display: flex;
 }
 
-/*? Modal styling */
+/** Modal styling */
+
 .modal{
-    position: fixed;
-    /* top: 35%;
-    left: 25%;
-    right: 25%;
-    margin: 0 auto; */
     z-index: 1;
     background-color: #fff;
-    width: 40%;
+    width: 40vw;
+    height: -moz-fill-available;
+    height: -ms-fill-available;
+    height: -o-fill-available;
+    height: -webkit-fill-available;
+    /** height: 92vh; can be used instead of webkit fill available */
     border-radius: 10px;
+    margin: 20px 0;
     padding: 20px;
+    overflow-y: scroll;
 }
+
+.modal::-webkit-scrollbar{
+    width: 5px; /** width of the entire scrollbar */
+}
+
+.modal::-webkit-scrollbar-track{
+    background-color: transparent; /** track = background of the scrollbar */
+}
+
+.modal::-webkit-scrollbar-thumb {
+    background-color: var(--rose-variant-five); /** thumb = scrollbar */ /** color of the scroll thumb */
+    border-radius: 20px;       /** roundness of the scroll thumb */
+}
+
+/** Close modal icon */
+
+.close-modal{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.close-modal-icon{
+    cursor: pointer;
+    /** fill: #0F1729; Original SVG color*/
+    fill: var(--primary-color-one);
+}
+
+/** Modal header and icon styling */
 
 .check-mark {
     height: 36px;
@@ -361,7 +411,8 @@ body{
     font-size: 13px;
 }
 
-/*? Ordered products styling*/
+/** Ordered products styling*/
+
 .order-summary{
     margin-top: 32px;
     background-color: var(--rose-variant-one);
@@ -418,7 +469,8 @@ body{
     margin: 10px 0;
 }
 
-/*? Order total and price styling */
+/** Order total and price styling */
+
 .modal-order-total{
     display: flex;
     justify-content: space-between;
@@ -430,7 +482,8 @@ body{
     font-size: 14px;
 }
 
-/*? Start new order button styling */
+/** Start new order button styling */
+
 .new-order {
     width: 100%;
     text-align: center;
@@ -442,7 +495,7 @@ body{
     padding: 12px 0px;
     border-radius: 20px;
     cursor: pointer;
-    margin-top: 20px;
+    margin-top: 64px;
 }
 
 /* todo: media responsiveness */
