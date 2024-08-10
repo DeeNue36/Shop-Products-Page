@@ -1,5 +1,5 @@
-let cartCount = 0; //? Global variable which keeps track of the cart count(Your cart(0))
-const cart = {}; //? Global variable object which stores product quantities based on their id
+let cartCount = 0; //? Global variable which updates the cart count(Your cart(0)), it keeps track of ALL PRODUCTS being add to the cart 
+const cart = {}; //? Global variable object that stores the amount of times an INDIVIDUAL product has been added to the cart based on the products ID
 const productPrice = {}; //? Global variable object which stores the product prices defined in data.json
 let data = []; //? Global variable which basically stores the array of products in data.json
 
@@ -168,7 +168,7 @@ function updateCartCount(id, operation, quantity = 1) {
 
     cart[id] = value; //* Updates the cart object with the new value using the id of the product
 
-    //* Update the quantity of the product(increment & decrement button) by first calling the parent element with its data-id
+    //* Update the quantity of the product in the button(increment & decrement button) by first calling the parent element with its data-id
     const productCards = document.querySelector(`.product-cards[data-id='${id}']`);
     
     //* Using the parent element with its data-id we call the increment & decrement button and update its span value
@@ -191,10 +191,10 @@ function onCartUpdate(){
 
     //? loops/iterates through the keys of the object cart and gets the ID's
     for(const id of Object.keys(cart)){
-        const quantity = cart[id]; //* gets each of the products in the cart using their id
-        const price = productPrice[id]; //* gets the price of each of the products using their id's
+        const quantity = cart[id]; //* gets each of the products in the cart using their ID's and initializes it to "quantity"
+        const price = productPrice[id]; //* gets the price of each of the products using their ID's and initializes it to "price"
         totalPrice += quantity * price; //* calculates the total price of all products in the cart
-        cartCount += quantity; //* gets the number of products in the cart and updates+ the html element "Your Cart(0)"
+        cartCount += quantity; //* updates the html element "Your Cart(0)"
     }
 
     if (cartCount < 1){
@@ -212,6 +212,10 @@ function onCartUpdate(){
     //? Update cart value i.e the html element Your cart(0)
     const cartAmount = document.getElementById('cart-quantity');
     cartAmount.innerText = cartCount;
+
+    //? Update mini cart value
+    const miniCartIcon = document.querySelector('.mini-cart-value');
+    miniCartIcon.innerText = cartCount;
 }
 
 //! Displays empty cart message once cartCount(Your Cart(0,1,2,3)) is exactly Your cart(0) i.e when there is no product in the cart
@@ -301,8 +305,7 @@ function displayAddedProducts() {
 const confirmOrder = document.getElementById('confirm-order');
 const modal = document.querySelector('.modal-container');
 confirmOrder.addEventListener('click', () => {
-    //* alert('Order has been confirmed');
-    //* window.location.reload();
+    
     modal.classList.remove('hide');
     modal.classList.add('show');
 
@@ -317,7 +320,7 @@ confirmOrder.addEventListener('click', () => {
             quantity: cart[id],
             thumbnail: product.image.thumbnail
         };
-    });
+    }).filter(product => product.quantity > 0); //* Filter out products with 0 quantity
     
     //? Populate the modal content
     const modalContent = document.querySelector('.modal');
@@ -327,6 +330,7 @@ confirmOrder.addEventListener('click', () => {
                 <path fill-rule="evenodd" clip-rule="evenodd" d="M5.29289 5.29289C5.68342 4.90237 6.31658 4.90237 6.70711 5.29289L12 10.5858L17.2929 5.29289C17.6834 4.90237 18.3166 4.90237 18.7071 5.29289C19.0976 5.68342 19.0976 6.31658 18.7071 6.70711L13.4142 12L18.7071 17.2929C19.0976 17.6834 19.0976 18.3166 18.7071 18.7071C18.3166 19.0976 17.6834 19.0976 17.2929 18.7071L12 13.4142L6.70711 18.7071C6.31658 19.0976 5.68342 19.0976 5.29289 18.7071C4.90237 18.3166 4.90237 17.6834 5.29289 17.2929L10.5858 12L5.29289 6.70711C4.90237 6.31658 4.90237 5.68342 5.29289 5.29289Z" fill-rule="evenodd"/>
             </svg>
         </div>
+
         <div class="modal-header">
             <img src="assets/images/icon-order-confirmed.svg" class="check-mark" alt="check-mark">
             <h2 class="modal-title">Order Confirmed</h2>
@@ -340,7 +344,7 @@ confirmOrder.addEventListener('click', () => {
                         <div class="bought-product-image">
                             <img src="${product.thumbnail}" class="thumbnail-image" alt="${product.name}-thumbnail">
                         </div>
-                        
+                    
                         <div class="bought-products-list">
                             <h5 class="bought-product-name">${product.name}</h5>
 
@@ -349,9 +353,9 @@ confirmOrder.addEventListener('click', () => {
                                 <span class="product-regular-price">@$${(product.price).toFixed(2)}</span>
                             </div>
                         </div>
-                        
+                    
                     </div>
-                
+            
                     <h5 class="bought-product-price">
                         <span class="currency">$</span>
                         <span class="bought-product-price-value">${(product.quantity * product.price).toFixed(2)}</span>
@@ -359,7 +363,7 @@ confirmOrder.addEventListener('click', () => {
                     <div class="divider"></div>
                 `).join('')}
             </div>
-            
+        
             <div class="modal-order-total">
                 <p>Order Total</p>
                 <h3 class="modal-total-price">
@@ -368,19 +372,57 @@ confirmOrder.addEventListener('click', () => {
                 </h3>
             </div>
         </div>
+
         <button type="button" class="new-order" id="new-order">
             Start New Order
         </button>
     `;
     modalContent.innerHTML += html;
-
+    
+    //* Close the modal  
     const closeModal = document.querySelector('.close-modal-icon');
     closeModal.addEventListener('click', () => {
-        modal.classList.add('hide');
-        modal.classList.remove('show');
-        modalContent.innerHTML = '';
+
+    //* Resets the modal
+    modal.classList.add('hide');
+    modal.classList.remove('show');
+    modalContent.innerHTML = '';
     })
-    
+
+    //* Start new order
+    const newOrder = document.querySelector('#new-order');
+    newOrder.addEventListener('click', () => {
+    //* Reset the cart and product quantities
+    //! cart = {}; -- does not work since I used const to declare the cart variable, another way to clear the cart would be to change the const to let --
+    //* window.location.reload(); OR use this to reload the page
+    Object.keys(cart).forEach(key => delete cart[key]);
+    cartCount = 0;
+
+    //* Reset the product quantities in the DOM(default value of the increment/decrement button)
+    document.querySelectorAll('.quantity-value').forEach(quantity => {
+        quantity.innerText = 1;
+    });
+
+    //* Reset the add to cart buttons
+    document.querySelectorAll('.add-product').forEach(button => {
+        toggleButtonState(button, false);
+    });
+
+    //* Reset the cart contents
+    document.querySelector('.cart-contents').innerHTML = '';
+
+    //* Reset the checkout container
+    document.getElementById('checkout-container').style.display = 'none';
+
+    //* Hide the modal & clear the modal
+    modal.classList.add('hide');
+    modal.classList.remove('show');
+    modalContent.innerHTML = '';
+
+    //* Update the cart count and total price
+    onCartUpdate();
+    })
+
 });
 
 //todo: start a new order when the 'start new order' button is clicked
