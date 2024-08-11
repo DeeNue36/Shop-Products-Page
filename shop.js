@@ -20,6 +20,16 @@ fetch('./assets/data.json')
                     id="product-image"
                     alt="${products.name}-desktop"
                 >
+                <img src="${products.image.tablet}" 
+                    class="product-img-tablet"
+                    id="product-image"
+                    alt="${products.name}-tablet"
+                >
+                <img src="${products.image.mobile}" 
+                    class="product-img-mobile"
+                    id="product-image"
+                    alt="${products.name}-mobile"
+                >
                 <button type="button" class="add-product" id="add-to-cart"> 
                     <img src="assets/images/icon-add-to-cart.svg" 
                         alt="add-to-cart"
@@ -109,6 +119,12 @@ function toggleButtonState(button, isVisible) {
     //* Sets the border of the class 'product-img' to a dashed border if isVisible is 'true' and 'none' if isVisible is 'false'
     const imageBorder = button.closest('.product-cards').querySelector('.product-img');
     imageBorder.style.border = isVisible ? '2px dashed #c73a0f' : 'none';
+
+    const imageBorderTablet = button.closest('.product-cards').querySelector('.product-img-tablet');
+    imageBorderTablet.style.border = isVisible ? '2px dashed #c73a0f' : 'none';
+
+    const imageBorderMobile = button.closest('.product-cards').querySelector('.product-img-mobile');
+    imageBorderMobile.style.border = isVisible ? '2px dashed #c73a0f' : 'none';
 }
 
 //! Handles increasing quantity on "+" button click
@@ -213,9 +229,12 @@ function onCartUpdate(){
     const cartAmount = document.getElementById('cart-quantity');
     cartAmount.innerText = cartCount;
 
-    //? Update mini cart value
-    const miniCartIcon = document.querySelector('.mini-cart-value');
+    //? Update mini cart values
+    const miniCartIcon = document.getElementById('mini-cart-value');
+    const miniCartIconMobile = document.getElementById('mini-cart-value-mobile');
     miniCartIcon.innerText = cartCount;
+    miniCartIconMobile.innerText = cartCount;
+    
 }
 
 //! Displays empty cart message once cartCount(Your Cart(0,1,2,3)) is exactly Your cart(0) i.e when there is no product in the cart
