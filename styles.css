@@ -418,11 +418,13 @@ body{
     z-index: 1;
     background-color: #fff;
     width: 40vw;
-    height: -moz-fill-available;
+    /* height: -moz-fill-available;
     height: -ms-fill-available;
     height: -o-fill-available;
-    height: -webkit-fill-available;
+    height: -webkit-fill-available; */
+    /** -webkit-fill-available adds extra white space, prominent in smaller devices when only a product or two are being displayed in the modal */
     /** height: 92vh; can be used instead of webkit fill available */
+    height: calc(100vh - 150px);
     border-radius: 10px;
     margin: 20px 0;
     padding: 20px;
@@ -498,7 +500,7 @@ body{
 
 .thumbnail-image{
     width: 51px;
-    height: 8.5vh;
+    /* height: 8.5vh; */
     border-radius: 5px;
 }
 
@@ -552,7 +554,6 @@ body{
     margin-top: 64px;
 }
 
-/* todo: media responsiveness */
 /** Media responsiveness */
 
 @media screen and (max-width: 1140px) {
@@ -582,7 +583,7 @@ body{
         width: 35vw;
     }
     .modal{
-        width: 50vw;
+        width: 60vw;
     }
 }
 
@@ -596,9 +597,6 @@ body{
     .products{
         grid-template-columns: auto auto;
     }
-    /* .product-img-tablet{
-        width: 210px;
-    } */
 }
 
 @media screen and (max-width: 829px){
@@ -676,7 +674,7 @@ body{
 
 @media screen and (max-width: 530px){
     .modal{
-        width: 80vw;
+        width: 90vw;
     }
 }
 
@@ -694,14 +692,23 @@ body{
 }
 
 @media screen and (max-width: 392px){
-    .modal{
-        width: 90vw;
+    .bought-product-name{
+        font-size: 12px;
+    }
+    .bought-product-price{
+        font-size: 0.8em;
     }
 }
 
 @media screen and (max-width: 350px){
     .modal{
         width: 100vw;
+    }
+}
+
+@media screen and (max-width: 320px){
+    .bought-product-name{
+        font-size: 10px;
     }
 }
 
