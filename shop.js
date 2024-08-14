@@ -324,14 +324,14 @@ function displayAddedProducts() {
 const confirmOrder = document.getElementById('confirm-order');
 const modal = document.querySelector('.modal-container');
 confirmOrder.addEventListener('click', () => {
-    
+    //* display the modal 
     modal.classList.remove('hide');
     modal.classList.add('show');
 
     //* Get the added products from the cart
     const boughtProducts = Object.keys(cart).map(id => {
         const product = data.find(item => item.id == parseInt(id));
-        console.log(data);
+        // console.log(data);
         return {
             id,
             name: product.name,
@@ -397,55 +397,55 @@ confirmOrder.addEventListener('click', () => {
         </button>
     `;
     modalContent.innerHTML += html;
-    
+
     //* Close the modal  
     const closeModal = document.querySelector('.close-modal-icon');
     closeModal.addEventListener('click', () => {
+        
+        //* Resets the modal
+        modal.classList.add('hide');
+        modal.classList.remove('show');
+        modalContent.innerHTML = '';
+    });
 
-    //* Resets the modal
-    modal.classList.add('hide');
-    modal.classList.remove('show');
-    modalContent.innerHTML = '';
-    })
-
-    //* Start new order
+    //* Start a new order
     const newOrder = document.querySelector('#new-order');
     newOrder.addEventListener('click', () => {
-    //* Reset the cart and product quantities
-    //! cart = {}; -- does not work since I used const to declare the cart variable, another way to clear the cart would be to change the const to let --
-    //* window.location.reload(); OR use this to reload the page
-    Object.keys(cart).forEach(key => delete cart[key]);
-    cartCount = 0;
 
-    //* Reset the product quantities in the DOM(default value of the increment/decrement button)
-    document.querySelectorAll('.quantity-value').forEach(quantity => {
-        quantity.innerText = 1;
-    });
+        //* Reset the cart and product quantities
+        //! cart = {}; -- does not work since I used const to declare the cart variable, another way to clear the cart would be to change the const to let --
+        //* window.location.reload(); OR use this to reload the page
+        Object.keys(cart).forEach(key => delete cart[key]);
+        cartCount = 0;
 
-    //* Reset the add to cart buttons
-    document.querySelectorAll('.add-product').forEach(button => {
-        toggleButtonState(button, false);
-    });
+        //* Reset the product quantities in the DOM(default value of the increment/decrement button)
+        document.querySelectorAll('.quantity-value').forEach(quantity => {
+            quantity.innerText = 1;
+        });
 
-    //* Reset the cart contents
-    document.querySelector('.cart-contents').innerHTML = '';
+        //* Reset the add to cart buttons
+        document.querySelectorAll('.add-product').forEach(button => {
+            toggleButtonState(button, false);
+        });
 
-    //* Reset the checkout container
-    document.getElementById('checkout-container').style.display = 'none';
+        //* Reset the cart contents
+        document.querySelector('.cart-contents').innerHTML = '';
 
-    //* Hide the modal & clear the modal
-    modal.classList.add('hide');
-    modal.classList.remove('show');
-    modalContent.innerHTML = '';
+        //* Reset the checkout container
+        document.getElementById('checkout-container').style.display = 'none';
 
-    //* Update the cart count and total price
-    onCartUpdate();
+        //* Hide the modal & clear the modal
+        modal.classList.add('hide');
+        modal.classList.remove('show');
+        modalContent.innerHTML = '';
+
+        //* Update the cart count and total price
+        onCartUpdate();
     })
 
 });
 
-//todo: start a new order when the 'start new order' button is clicked
-//todo: enable the modal to be able to scroll
+//todo: display a spinning loader OR a confirmation message in the modal when start new order button is clicked then after an inter val the modal should disappear and the page should be reset to the initial state
 
 document.addEventListener("DOMContentLoaded", () => {
     //* Additional initialization if necessary
