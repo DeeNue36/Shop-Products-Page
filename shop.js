@@ -321,6 +321,7 @@ function displayAddedProducts() {
     .catch(error => console.error('Error fetching data:', error));
 }
 
+//! Confirm an order and display modal with the list of products bought, quantity, prices and overall total price 
 const confirmOrder = document.getElementById('confirm-order');
 const modal = document.querySelector('.modal-container');
 confirmOrder.addEventListener('click', () => {
@@ -405,7 +406,7 @@ confirmOrder.addEventListener('click', () => {
         //* Resets the modal
         modal.classList.add('hide');
         modal.classList.remove('show');
-        modalContent.innerHTML = '';
+        modalContent.innerHTML = ' ';
     });
 
     //* Start a new order
