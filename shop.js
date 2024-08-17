@@ -1,17 +1,25 @@
-let cartCount = 0; //? Global variable which updates the cart count(Your cart(0)), it keeps track of ALL PRODUCTS being add to the cart 
-const cart = {}; //? Global variable object that stores the amount of times an INDIVIDUAL product has been added to the cart based on the products ID
-const productPrice = {}; //? Global variable object which stores the product prices defined in data.json
-let data = []; //? Global variable which basically stores the array of products in data.json
+let cartCount = 0; //* Global variable. Updates the HTML Element(Your cart(0). Stores and keeps track of ALL product quantities being added to the cart 
 
+const cart = {}; //* Global variable. Uses the ID of EACH INDIVIDUAL product to store and keep track of its quantity 
+
+const productPrice = {}; //* Global variable. Stores the product prices defined in data.json
+
+let data = []; //* Global variable. Stores the array of the products in data.json
+
+//! Fetches the products data and displays list of products
 fetch('./assets/data.json')
 .then(response => response.json())
 .then(jsonData => {
     data = jsonData; //* Assigns the fetched data to the global variable "data"
-    console.log(data);
+
+    //* Displays the product cards in its parent HTML Element 'products'
     let productElements = document.getElementById("products");
     let html = "";
     data.forEach(products => {
-        productPrice[products.id] = products.price; //* gets the product id, its equivalent price and stores it in productPrice
+
+        //* creates an object to store the product id and its price
+        productPrice[products.id] = products.price;
+
         html += 
         `
             <div class="product-cards" data-id='${products.id}'>
@@ -87,73 +95,106 @@ function handleAddToCart(event) {
     //! Deprecated -- do not use
     //! const id = parseInt(event.target.parentElement.getAttribute('data-id'));
     //! updateCartCount(id, 'increase');
-    //! toggleButtonState(event.target, true);
+    //! toggleProductCardButtonState(event.target, true);
 
-    const target = event.target;
+    const target = event.currentTarget;
 
     //* Checks if the event targeted is an image and if so it targets the parent element of the image which is the add to cart button, otherwise it uses the event target itself which is the add to cart button
     const button = target.tagName === 'IMG'? target.parentNode : target;
-    const id = parseInt(button.closest('.product-cards').getAttribute('data-id'));
-    console.log(id);
+
+    const productCards = button.closest('.product-cards');
+    const id = parseInt(productCards.getAttribute('data-id'));
+
     updateCartCount(id, 'increase');
-    toggleButtonState(button, true); //? changes button from add to cart to increment & decrement button
+    toggleProductCardButtonState(button, true); //? changes button from add to cart to increment & decrement button
     displayAddedProducts();
     onCartUpdate();
 }
 
-//! Toggle button states and image border
-function toggleButtonState(button, isVisible) {
+//! Set image border style
+function setBorderStyle(element, isVisible) {
+    /**
+     ** Sets the border style of an element based on visibility.
+     ** @param {HTMLElement} element - The element to set the border style.
+     ** @param {boolean} isVisible - The visibility state to determine the border style.
+    */
+    element.style.border = isVisible ? '2px dashed #c73a0f' : 'none';
+}
 
-    //* Button and isVisible have been passed as parameters to the function
-    //* Button in this context varies depending on which function toggleButtonState function is called in and has the parameter button
-    //* Basically it is used to toggle the visibility of a button and its associated content (mostly the add to cart button)
-    //* When the button is clicked in the function it is called in, the button is set to 'none' if isVisible is 'true' and 'flex' if isVisible is 'false'
+//! Toggle button states
+function toggleProductCardButtonState(button, isVisible) {
+    /** 
+     ** Toggles the visibility of a button and its associated content.
+     ** @param {HTMLElement} button - The button element to toggle.
+     ** @param {boolean} isVisible - The visibility state to set (true for hidden, false for visible).
+    */
     button.style.display = isVisible ? 'none' : 'flex';
 
-    //* finds the closest element with the class 'product-cards' and queries for the class 'quantity'
-    const quantityDiv = button.closest('.product-cards').querySelector('.quantity');
+    //* Gets the closest element with the class 'product-cards' which then gets the class 'quantity'(parent container of the increment & decrement button)
+    const productCards = button.closest('.product-cards');
+    const quantityDiv = productCards.querySelector('.quantity');
 
-    //* it then sets the display of the class 'quantity' to 'flex' if isVisible is 'true' and 'none' if isVisible is false
-    quantityDiv.style.display = isVisible ? 'flex' : 'none';
+    //* Sets the display of the class 'quantity' to 'flex' if isVisible is 'true' and 'none' if isVisible is false
+    if (quantityDiv) {
+        quantityDiv.style.display = isVisible ? 'flex' : 'none';
+    }
 
-    //* Sets the border of the class 'product-img' to a dashed border if isVisible is 'true' and 'none' if isVisible is 'false'
-    const imageBorder = button.closest('.product-cards').querySelector('.product-img');
-    imageBorder.style.border = isVisible ? '2px dashed #c73a0f' : 'none';
+    //* Sets the border of the product images to a dashed border if isVisible is 'true' and 'none' if isVisible is 'false'
+    //? Desktop product image
+    setBorderStyle(productCards.querySelector('.product-img'), isVisible);
 
-    const imageBorderTablet = button.closest('.product-cards').querySelector('.product-img-tablet');
-    imageBorderTablet.style.border = isVisible ? '2px dashed #c73a0f' : 'none';
+    //? Tablet product image
+    setBorderStyle(productCards.querySelector('.product-img-tablet'), isVisible);
 
-    const imageBorderMobile = button.closest('.product-cards').querySelector('.product-img-mobile');
-    imageBorderMobile.style.border = isVisible ? '2px dashed #c73a0f' : 'none';
+    //? Mobile product image
+    setBorderStyle(productCards.querySelector('.product-img-mobile'), isVisible);
 }
 
 //! Handles increasing quantity on "+" button click
 function handleIncreaseQuantity(event) {
+    // Get the product id from the event target
     const id = parseInt(event.target.closest('.product-cards').getAttribute('data-id'));
+
+    // Increase the quantity of the product in the cart
     updateCartCount(id, 'increase');
+
+    // Display the updated list of added products
     displayAddedProducts();
+
+    // Update the cart and checkout information
     onCartUpdate();
 }
 
 //! Handles decreasing quantity on "-" button click
 function handleDecreaseQuantity(event) {
-    const id = parseInt(event.target.closest('.product-cards').getAttribute('data-id')); //* Gets the ID of the closest parent element 'product-card' which is used to identify the specific product in the cart
+    //* When the user clicks on the "-" button it first targets the closest 'product-cards' HTML Element
+    const productCard = event.target.closest('.product-cards');
 
-    updateCartCount(id, 'decrease'); //* decreases the quantity on "-" button click
+    //* Gets the id of the 'product-cards' HTML Element
+    const id = parseInt(productCard.getAttribute('data-id'));
 
-    const button = event.target.closest('.product-cards').querySelector('.add-product'); //* gets the element with the class 'add-product'(add to cart button) and targets the closest element with the class 'product-cards'
+    //* Decreases the quantity on "-" button click
+    updateCartCount(id, 'decrease');
+
+    //* Gets the element with the class 'add-product'(add to cart button) and targets the closest element with the class 'product-cards'
+    const button = productCard.querySelector('.add-product');
 
     //? Checks if each of the product quantities is 0
     if (cart[id] === 0) {
-        toggleButtonState(button, false); //? the add to cart button now has the property 'display:none' this means the parameter isVisible is 'true' so this reverts back to the add to cart button by setting the property to 'display:flex' which means the parameter isVisible is 'false'
+
+        //? the add to cart button currently has the property 'display:none' meaning the parameter isVisible is 'true' so this displays the add to cart button by setting the property to 'display:flex' which means the parameter isVisible is 'false'
+        toggleProductCardButtonState(button, false); 
 
         //* Get the element with the class 'cart-contents' which is the div that contains ALL the products added to the cart
         const cartContents = document.querySelector('.cart-contents');
 
-        //* Gets the element with the class 'added-products-container' which is the container div of the INDIVIDUAL added products and also gets its ID
+        //* Gets the HTML Element with the class 'added-products-container' which is the container div of the INDIVIDUAL added products and also gets its ID
         const addedProductsContainer = cartContents.querySelector(`.added-products-container[data-id="${id}"]`);
 
-        addedProductsContainer.remove(); //* remove the container of the INDIVIDUAL product from the DOM
+        if(addedProductsContainer){
+            //* remove the container of the INDIVIDUAL product from the DOM
+            addedProductsContainer.remove();
+        }
     }
     else{
         displayAddedProducts();
@@ -164,10 +205,11 @@ function handleDecreaseQuantity(event) {
 //! Update cart count(Your Cart(0)) and quantity(increment & decrement button value)
 function updateCartCount(id, operation, quantity = 1) {
     //? cart and cartCount are global variables
-    //? cart is used to store the value of the product quantities being added
+    //? cart is used to store the value of the individual product quantities being added
     //? cartCount is used to keep track of the cart count (Your cart(0,1,2,etc))
 
-    const prevValue = cart[id] || 0; //* retrieves the previous quantity of the product from the cart object using the id or the previous value is 0
+    //* retrieves the previous quantity of the product from the cart object using the id or the previous value is 0
+    const prevValue = cart[id] || 0;
 
     let value = prevValue;
 
@@ -182,19 +224,21 @@ function updateCartCount(id, operation, quantity = 1) {
         //! cartCount = cartCount - quantity;
     }
 
-    cart[id] = value; //* Updates the cart object with the new value using the id of the product
+    //* Updates the cart object with the new value/quantity of the product using the id of the product
+    cart[id] = value;
+    console.log(cart);
 
-    //* Update the quantity of the product in the button(increment & decrement button) by first calling the parent element with its data-id
+    //* Calls the 'product-cards' HTML Element and its data-id
     const productCards = document.querySelector(`.product-cards[data-id='${id}']`);
     
-    //* Using the parent element with its data-id we call the increment & decrement button and update its span value
-    const quantityAmount = productCards.querySelector('#quantity-value'); //? OR const quantityAmount = document.getElementById('quantity-value');
-
+    //* Updates the value of the HTML Element 'quantity-value'(increment and decrement button) for the specific product
+    //? OR const quantityAmount = document.getElementById('quantity-value');
+    const quantityAmount = productCards.querySelector('#quantity-value'); 
     quantityAmount.innerText = value;
 
     //! Update cart value i.e the html element Your cart(0) => NOW HANDLED BY onCartUpdate function
-    //* const cartAmount = document.getElementById('cart-quantity');
-    //* cartAmount.innerText = cartCount; 
+    //! const cartAmount = document.getElementById('cart-quantity');
+    //! cartAmount.innerText = cartCount; 
 }
 
 //! Updates the cart at every instance
@@ -302,7 +346,7 @@ function displayAddedProducts() {
                         //? Change the button of the deleted product back to "Add to Cart"
                         const productCards = document.querySelector(`.product-cards[data-id="${id}"]`);
                         const addToCartButton = productCards.querySelector('.add-product');
-                        toggleButtonState(addToCartButton, false);
+                        toggleProductCardButtonState(addToCartButton, false);
 
                         //* Checks if the cart is empty and displays a message
                         //! emptyCartMessage(); => NOW HANDLED BY onCartUpdate function
@@ -426,7 +470,7 @@ confirmOrder.addEventListener('click', () => {
 
         //* Reset the add to cart buttons
         document.querySelectorAll('.add-product').forEach(button => {
-            toggleButtonState(button, false);
+            toggleProductCardButtonState(button, false);
         });
 
         //* Reset the cart contents
