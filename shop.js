@@ -69,7 +69,6 @@ fetch('./assets/data.json')
     productElements.innerHTML = html;
 
     //! Add event listeners for dynamically added elements
-
     //? Passes the parameter 'button' to each of the add to cart buttons
     document.querySelectorAll('.add-product').forEach(button => {
         //* The parameter 'button' then calls the function 'handleAddToCart' when it is clicked 
@@ -92,24 +91,28 @@ fetch('./assets/data.json')
 
 //! Function for the add to cart button which handles adding products to cart
 function handleAddToCart(event) {
-    //! Deprecated -- do not use
-    //! const id = parseInt(event.target.parentElement.getAttribute('data-id'));
-    //! updateCartCount(id, 'increase');
-    //! toggleProductCardButtonState(event.target, true);
-
+    //* The event listener targets the button that was clicked
     const target = event.currentTarget;
 
-    //* Checks if the event targeted is an image and if so it targets the parent element of the image which is the add to cart button, otherwise it uses the event target itself which is the add to cart button
+    //* Checks if the event targets an image and if so it targets the parent HTML element(add to cart button), otherwise the event target is used(add to cart button)
     const button = target.tagName === 'IMG'? target.parentNode : target;
 
+    //* Get the product id from the closest HTML Element 'product-cards' event target(add to cart button)
     const productCards = button.closest('.product-cards');
     const id = parseInt(productCards.getAttribute('data-id'));
 
-    updateCartCount(id, 'increase');
-    toggleProductCardButtonState(button, true); //? changes button from add to cart to increment & decrement button
+    //? Updates the product count
+    updateProductCount(id, 'increase');
+
+    //? Changes button from add to cart to increment & decrement button
+    toggleProductCardButtonState(button, true); 
+
+    //? Display the updated list of added products
     displayAddedProducts();
+
+    //? Updates the cart count(Your Cart(0,1,2,3...etc))
     onCartUpdate();
-}
+};
 
 //! Set image border style
 function setBorderStyle(element, isVisible) {
@@ -119,9 +122,9 @@ function setBorderStyle(element, isVisible) {
      ** @param {boolean} isVisible - The visibility state to determine the border style.
     */
     element.style.border = isVisible ? '2px dashed #c73a0f' : 'none';
-}
+};
 
-//! Toggle button states
+//! Toggle button states and image border
 function toggleProductCardButtonState(button, isVisible) {
     /** 
      ** Toggles the visibility of a button and its associated content.
@@ -148,22 +151,22 @@ function toggleProductCardButtonState(button, isVisible) {
 
     //? Mobile product image
     setBorderStyle(productCards.querySelector('.product-img-mobile'), isVisible);
-}
+};
 
 //! Handles increasing quantity on "+" button click
 function handleIncreaseQuantity(event) {
-    // Get the product id from the event target
+    //* Get the product id from the event target
     const id = parseInt(event.target.closest('.product-cards').getAttribute('data-id'));
 
-    // Increase the quantity of the product in the cart
-    updateCartCount(id, 'increase');
+    //? Increase the quantity of the product in the cart
+    updateProductCount(id, 'increase');
 
-    // Display the updated list of added products
+    //? Display the updated list of added products
     displayAddedProducts();
 
-    // Update the cart and checkout information
+    //? Update the cart and checkout information
     onCartUpdate();
-}
+};
 
 //! Handles decreasing quantity on "-" button click
 function handleDecreaseQuantity(event) {
@@ -174,21 +177,20 @@ function handleDecreaseQuantity(event) {
     const id = parseInt(productCard.getAttribute('data-id'));
 
     //* Decreases the quantity on "-" button click
-    updateCartCount(id, 'decrease');
+    updateProductCount(id, 'decrease');
 
     //* Gets the element with the class 'add-product'(add to cart button) and targets the closest element with the class 'product-cards'
     const button = productCard.querySelector('.add-product');
 
-    //? Checks if each of the product quantities is 0
+    //* Checks if each of the product quantities is 0
     if (cart[id] === 0) {
-
         //? the add to cart button currently has the property 'display:none' meaning the parameter isVisible is 'true' so this displays the add to cart button by setting the property to 'display:flex' which means the parameter isVisible is 'false'
         toggleProductCardButtonState(button, false); 
 
         //* Get the element with the class 'cart-contents' which is the div that contains ALL the products added to the cart
         const cartContents = document.querySelector('.cart-contents');
 
-        //* Gets the HTML Element with the class 'added-products-container' which is the container div of the INDIVIDUAL added products and also gets its ID
+        //* Gets the HTML Element 'added-products-container' (the container div of the INDIVIDUAL added products) and its ID
         const addedProductsContainer = cartContents.querySelector(`.added-products-container[data-id="${id}"]`);
 
         if(addedProductsContainer){
@@ -200,14 +202,10 @@ function handleDecreaseQuantity(event) {
         displayAddedProducts();
     }
     onCartUpdate();
-}
+};
 
-//! Update cart count(Your Cart(0)) and quantity(increment & decrement button value)
-function updateCartCount(id, operation, quantity = 1) {
-    //? cart and cartCount are global variables
-    //? cart is used to store the value of the individual product quantities being added
-    //? cartCount is used to keep track of the cart count (Your cart(0,1,2,etc))
-
+//! Update product quantity(increment & decrement button) value
+function updateProductCount(id, operation, quantity = 1) {
     //* retrieves the previous quantity of the product from the cart object using the id or the previous value is 0
     const prevValue = cart[id] || 0;
 
@@ -239,50 +237,62 @@ function updateCartCount(id, operation, quantity = 1) {
     //! Update cart value i.e the html element Your cart(0) => NOW HANDLED BY onCartUpdate function
     //! const cartAmount = document.getElementById('cart-quantity');
     //! cartAmount.innerText = cartCount; 
-}
+};
 
-//! Updates the cart at every instance
+//! Update the cart at every instance
 function onCartUpdate(){
     const checkoutContainer =  document.getElementById('checkout-container');
 
-    let totalPrice = 0; //* used to calculate the total price
+    //* Used to calculate the total price
+    let totalPrice = 0; 
 
-    let cartCount = 0; //* cartCount is re-initialized in this block to prevent any issues with the global variable cartCount. Used to update the element 'Your cart(0)'
+    //* cartCount is re-initialized in this block to prevent any issues with the global variable cartCount. Used to update the HTML Element 'Your cart(0)'
+    let cartCount = 0; 
 
-    //? loops/iterates through the keys of the object cart and gets the ID's
+    //* Loops/iterates through the keys of the object cart and gets the id's
     for(const id of Object.keys(cart)){
-        const quantity = cart[id]; //* gets each of the products in the cart using their ID's and initializes it to "quantity"
-        const price = productPrice[id]; //* gets the price of each of the products using their ID's and initializes it to "price"
-        totalPrice += quantity * price; //* calculates the total price of all products in the cart
-        cartCount += quantity; //* updates the html element "Your Cart(0)"
+
+        //* Retrieves the quantity of the product from the cart object using the id
+        const quantity = cart[id]; 
+
+        //* updates the HTML element "Your Cart(0)"
+        cartCount += quantity;
+
+        //* Retrieves the price of each of the products using their id's and initializes it to "price"
+        const price = productPrice[id];
+
+        //* Calculates the total price of all products in the cart
+        totalPrice += quantity * price;
     }
 
-    if (cartCount < 1){
-        checkoutContainer.style.display = 'none'; //* hides the delivery message and checkout button
-        emptyCartMessage();
+    if (cartCount < 1) {
+        //* hides the delivery message and checkout button
+        checkoutContainer.style.display = 'none';
+        displayEmptyCartMessage();
     }
-    else{
-        checkoutContainer.style.display = 'block'; //* displays the delivery message and checkout button
+    else {
+        //* displays the delivery message and checkout button
+        checkoutContainer.style.display = 'block';
     }
 
-    //? Update total price
+    //* Displays and updates the total price
     const totalPriceElement = document.getElementById('total-price-value');
     totalPriceElement.textContent = totalPrice.toFixed(2);
 
-    //? Update cart value i.e the html element Your cart(0)
+    //* Updates the cart value i.e the HTML Element "(Your cart(0))"
     const cartAmount = document.getElementById('cart-quantity');
     cartAmount.innerText = cartCount;
 
-    //? Update mini cart values
+    //* Updates the mini cart values
     const miniCartIcon = document.getElementById('mini-cart-value');
     const miniCartIconMobile = document.getElementById('mini-cart-value-mobile');
     miniCartIcon.innerText = cartCount;
     miniCartIconMobile.innerText = cartCount;
     
-}
+};
 
-//! Displays empty cart message once cartCount(Your Cart(0,1,2,3)) is exactly Your cart(0) i.e when there is no product in the cart
-function emptyCartMessage() {
+//! Displays a message once the cartCount is 0 i.e no product in the cart
+function displayEmptyCartMessage() {
     if (cartCount === 0 || Object.values(cart).every(value => value === 0)) {
         const cartContents = document.querySelector('.cart-contents');
         cartContents.innerHTML = `
@@ -297,19 +307,31 @@ function emptyCartMessage() {
             </div>
         `;
     }
-}
+};
 
 //! Display added products in cart
+let cachedData; //* caches the fetched data to avoid redundant fetch calls
 function displayAddedProducts() {
-    fetch('./assets/data.json')
-      .then(response => response.json())
-      .then(data => {
+
+    //* Checks if the data is cached
+    if (!cachedData) {
+        fetch('./assets/data.json')
+          .then(response => response.json())
+          .then(data => {
+            cachedData = data;
+            //* Call the function again to use the cached data
+            displayAddedProducts(); 
+          })
+        .catch(error => console.error('Error fetching data:', error));
+    }
+    else {
+        //* clears cart-contents
         const cartContents = document.querySelector('.cart-contents');
-        cartContents.innerHTML = ''; //? OR cartContents.textContent = ''; // clears cart-contents
+        cartContents.innerHTML = ''; //? OR cartContents.textContent = ''; 
 
         Object.keys(cart).forEach((id) => {
         if (cart[id] > 0) {
-            const product = data.find((item) => item.id == parseInt(id));  
+            const product = cachedData.find((item) => item.id == parseInt(id));  
             if (product) {
                 const html = `
                     <div class="added-products-container" data-id="${id}">
@@ -333,15 +355,17 @@ function displayAddedProducts() {
                 cartContents.innerHTML += html; 
                 
                 //! Add event listener to remove-product button
-                document.addEventListener('click', (event) => {
-                    
+                cartContents.addEventListener('click', (event) => {
                     if (event.target.closest('.remove-container')) {
-                        //? Remove product from cart by first getting the id
+
+                        //* Remove product from cart by first getting the id
                         const id = event.target.closest('.added-products-container').getAttribute('data-id');
 
-                        updateCartCount(id, 'decrease', cart[id]); //? Remove all quantities of the product and updates the cart
+                        //? Remove all quantities of the product and update the cart
+                        updateProductCount(id, 'decrease', cart[id]);
                         
-                        event.target.closest('.added-products-container').remove(); //? Remove the container from the DOM
+                        //? Remove the container from the DOM
+                        event.target.closest('.added-products-container').remove(); 
 
                         //? Change the button of the deleted product back to "Add to Cart"
                         const productCards = document.querySelector(`.product-cards[data-id="${id}"]`);
@@ -349,10 +373,8 @@ function displayAddedProducts() {
                         toggleProductCardButtonState(addToCartButton, false);
 
                         //* Checks if the cart is empty and displays a message
-                        //! emptyCartMessage(); => NOW HANDLED BY onCartUpdate function
+                        //! displayEmptyCartMessage(); => NOW HANDLED BY onCartUpdate function
                         onCartUpdate();
-
-
                     }
                 });
             }
@@ -361,9 +383,8 @@ function displayAddedProducts() {
             console.log('Product not found!');
         }
         });
-      })
-    .catch(error => console.error('Error fetching data:', error));
-}
+    };
+};
 
 //! Confirm an order and display modal with the list of products bought, quantity, prices and overall total price 
 const confirmOrder = document.getElementById('confirm-order');
@@ -459,7 +480,7 @@ confirmOrder.addEventListener('click', () => {
 
         //* Reset the cart and product quantities
         //! cart = {}; -- does not work since I used const to declare the cart variable, another way to clear the cart would be to change the const to let --
-        //* window.location.reload(); OR use this to reload the page
+        //* window.location.reload(); OR use this to simply reload the page
         Object.keys(cart).forEach(key => delete cart[key]);
         cartCount = 0;
 
