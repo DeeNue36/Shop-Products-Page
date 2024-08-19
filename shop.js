@@ -121,7 +121,7 @@ function setBorderStyle(element, isVisible) {
      ** @param {HTMLElement} element - The element to set the border style.
      ** @param {boolean} isVisible - The visibility state to determine the border style.
     */
-    element.style.border = isVisible ? '2px dashed #c73a0f' : 'none';
+    element.style.border = isVisible ? '2px solid #c73a0f' : 'none';
 };
 
 //! Toggle button states and image border
@@ -170,7 +170,7 @@ function handleIncreaseQuantity(event) {
 
 //! Handles decreasing quantity on "-" button click
 function handleDecreaseQuantity(event) {
-    //* When the user clicks on the "-" button it first targets the closest 'product-cards' HTML Element
+    //* When the user clicks on the "-" button it targets the closest 'product-cards' HTML Element
     const productCard = event.target.closest('.product-cards');
 
     //* Gets the id of the 'product-cards' HTML Element
@@ -224,7 +224,7 @@ function updateProductCount(id, operation, quantity = 1) {
 
     //* Updates the cart object with the new value/quantity of the product using the id of the product
     cart[id] = value;
-    console.log(cart);
+    // console.log(cart);
 
     //* Calls the 'product-cards' HTML Element and its data-id
     const productCards = document.querySelector(`.product-cards[data-id='${id}']`);
