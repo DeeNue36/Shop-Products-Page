@@ -475,28 +475,27 @@ confirmOrder.addEventListener('click', () => {
     });
 
     //* Start a new order
-    const newOrder = document.querySelector('#new-order');
+    const newOrderButton = document.querySelector('#new-order');
     const spinner = document.getElementById('spinner');
-    newOrder.addEventListener('click', () => {
+    newOrderButton.addEventListener('click', () => {
         //* Show the spinner
         spinner.classList.remove('hide');
         spinner.classList.add('show');
 
         //? Delay the reset actions
         setTimeout(() => {
-
-             //* Reset the cart and product quantities
-            //! cart = {}; -- does not work since I used const to declare the cart variable, another way to clear the cart would be to change the const to let --
+            //* Reset the cart and product quantities
+            //! cart = {}; -- does not work since I used const to declare the cart variable, to use this change the const to let --
             //* window.location.reload(); OR use this to simply reload the page
             Object.keys(cart).forEach(key => delete cart[key]);
             cartCount = 0;
 
-            //* Reset the product quantities in the DOM(default value of the increment/decrement button)
+            //* Reset the product quantities in the DOM(increment/decrement button default value)
             document.querySelectorAll('.quantity-value').forEach(quantity => {
                 quantity.innerText = 1;
             });
 
-            //* Reset the add to cart buttons
+            //* Display the add to cart buttons
             document.querySelectorAll('.add-product').forEach(button => {
                 toggleProductCardButtonState(button, false);
             });
@@ -504,7 +503,7 @@ confirmOrder.addEventListener('click', () => {
             //* Reset the cart contents
             document.querySelector('.cart-contents').innerHTML = '';
 
-            //* Reset the checkout container
+            //* Hide the checkout container
             document.getElementById('checkout-container').style.display = 'none';
 
             //* Hide the modal & clear the modal
@@ -522,8 +521,6 @@ confirmOrder.addEventListener('click', () => {
         }, 5000);
     });
 });
-
-//todo: display a spinning loader OR a confirmation message in the modal when start new order button is clicked then after an inter val the modal should disappear and the page should be reset to the initial state
 
 document.addEventListener("DOMContentLoaded", () => {
     //* Additional initialization if necessary
