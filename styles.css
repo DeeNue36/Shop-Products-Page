@@ -430,15 +430,18 @@ body{
     overflow-y: scroll;
 }
 
-.modal::-webkit-scrollbar{
+.modal::-webkit-scrollbar, 
+.order-summary::-webkit-scrollbar {
     width: 5px; /** width of the entire scrollbar */
 }
 
-.modal::-webkit-scrollbar-track{
+.modal::-webkit-scrollbar-track, 
+.order-summary::-webkit-scrollbar-track {
     background-color: transparent; /** track = background of the scrollbar */
 }
 
-.modal::-webkit-scrollbar-thumb {
+.modal::-webkit-scrollbar-thumb,
+.order-summary::-webkit-scrollbar-thumb {
     background-color: var(--rose-variant-five); /** thumb = scrollbar */ /** color of the scroll thumb */
     border-radius: 20px;       /** roundness of the scroll thumb */
 }
@@ -553,6 +556,37 @@ body{
     margin-top: 64px;
 }
 
+/** Spinner styling */
+
+.spinner-container{
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.spinner{
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+    border: 6px solid;
+    border-radius: 50%;
+    border-color: var(--primary-color-one) transparent var(--rose-variant-four) transparent;
+    animation: spin 1.2s cubic-bezier(0.6, -0.28, 0.74, 0.05) infinite;
+    /* animation: spin 1.2s linear infinite; */
+}
+
+@keyframes spin {
+    to{
+        transform: rotate(360deg);
+    }
+}
+
 /** Media responsiveness */
 
 @media screen and (max-width: 1140px) {
@@ -590,7 +624,10 @@ body{
         flex-flow: column;
         justify-content: space-evenly;
         width: 60vw;
-        height: 60vw;
+        overflow-y: hidden;
+    }
+    .order-summary{
+        overflow-y: scroll;
     }
 }
 
@@ -615,12 +652,6 @@ body{
     }
     .cart{
         width: 50vw;
-    }
-}
-
-@media screen and (max-width: 768px){
-    .modal{
-    height: 80vh;
     }
 }
 
