@@ -476,39 +476,51 @@ confirmOrder.addEventListener('click', () => {
 
     //* Start a new order
     const newOrder = document.querySelector('#new-order');
+    const spinner = document.getElementById('spinner');
     newOrder.addEventListener('click', () => {
+        //* Show the spinner
+        spinner.classList.remove('hide');
+        spinner.classList.add('show');
 
-        //* Reset the cart and product quantities
-        //! cart = {}; -- does not work since I used const to declare the cart variable, another way to clear the cart would be to change the const to let --
-        //* window.location.reload(); OR use this to simply reload the page
-        Object.keys(cart).forEach(key => delete cart[key]);
-        cartCount = 0;
+        //? Delay the reset actions
+        setTimeout(() => {
 
-        //* Reset the product quantities in the DOM(default value of the increment/decrement button)
-        document.querySelectorAll('.quantity-value').forEach(quantity => {
-            quantity.innerText = 1;
-        });
+             //* Reset the cart and product quantities
+            //! cart = {}; -- does not work since I used const to declare the cart variable, another way to clear the cart would be to change the const to let --
+            //* window.location.reload(); OR use this to simply reload the page
+            Object.keys(cart).forEach(key => delete cart[key]);
+            cartCount = 0;
 
-        //* Reset the add to cart buttons
-        document.querySelectorAll('.add-product').forEach(button => {
-            toggleProductCardButtonState(button, false);
-        });
+            //* Reset the product quantities in the DOM(default value of the increment/decrement button)
+            document.querySelectorAll('.quantity-value').forEach(quantity => {
+                quantity.innerText = 1;
+            });
 
-        //* Reset the cart contents
-        document.querySelector('.cart-contents').innerHTML = '';
+            //* Reset the add to cart buttons
+            document.querySelectorAll('.add-product').forEach(button => {
+                toggleProductCardButtonState(button, false);
+            });
 
-        //* Reset the checkout container
-        document.getElementById('checkout-container').style.display = 'none';
+            //* Reset the cart contents
+            document.querySelector('.cart-contents').innerHTML = '';
 
-        //* Hide the modal & clear the modal
-        modal.classList.add('hide');
-        modal.classList.remove('show');
-        modalContent.innerHTML = '';
+            //* Reset the checkout container
+            document.getElementById('checkout-container').style.display = 'none';
 
-        //* Update the cart count and total price
-        onCartUpdate();
-    })
+            //* Hide the modal & clear the modal
+            modal.classList.add('hide');
+            modal.classList.remove('show');
+            modalContent.innerHTML = '';
 
+            //* Update the cart count and total price
+            onCartUpdate();
+
+            //* Hide the spinner
+            spinner.classList.remove('show');
+            spinner.classList.add('hide');
+
+        }, 5000);
+    });
 });
 
 //todo: display a spinning loader OR a confirmation message in the modal when start new order button is clicked then after an inter val the modal should disappear and the page should be reset to the initial state
