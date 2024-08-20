@@ -135,6 +135,7 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
+    color: #000;
     font-family: 'Red Hat Text', sans-serif;
     font-weight: var(--font-weight-semibold);
     border: 1px solid #000;
