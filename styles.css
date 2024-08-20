@@ -624,7 +624,7 @@ body{
         flex-flow: column;
         justify-content: space-evenly;
         width: 60vw;
-        max-height: 55vh;
+        height: initial;
         overflow-y: hidden;
     }
     .order-summary{
