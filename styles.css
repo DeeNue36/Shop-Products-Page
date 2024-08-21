@@ -405,7 +405,8 @@ body{
     height: 100%;
     top: 0;
     justify-content: center;
-    place-items: center;
+    overflow-y: scroll;
+    padding: 40px 0;
 }
 
 /** Styles to toggle modal display */
@@ -424,11 +425,8 @@ body{
     z-index: 1;
     background-color: #fff;
     width: 40vw;
-    /* height: -webkit-fill-available; */
-    /** -webkit-fill-available adds extra white space, prominent in smaller devices when only a product or two are being displayed in the modal */
-    height: calc(100vh - 120px);
     border-radius: 10px;
-    margin: 20px 0;
+    margin: auto;
     padding: 20px;
     overflow-y: scroll;
 }
@@ -625,20 +623,9 @@ html::-webkit-scrollbar-thumb,
     .cart{
         width: 35vw;
     }
-    .modal-container{
-        place-items: baseline;
-        overflow-y: scroll;    
-    }
     .modal{
-        display: flex;
-        flex-flow: column;
-        justify-content: space-evenly;
         width: 60vw;
-        height: max-content;
         overflow-y: hidden;
-    }
-    .order-summary{
-        overflow-y: scroll;
     }
 }
 
@@ -727,13 +714,21 @@ html::-webkit-scrollbar-thumb,
 
 @media screen and (max-width: 530px){
     .modal{
-        width: 90vw;
+        width: 92vw;
     }
 }
 
 @media screen and (max-width: 480px){
     .modal{
-        max-height: 80vh;
+        /** Using this enables the scrolling on 'order-summary' i.e. the list of purchased products */
+        display: flex;
+        flex-direction: column;
+        max-height: 92vh;
+        /** Using this enables scrolling on the modal itself */
+        /* overflow-y: scroll; */
+    }
+    .order-summary{
+        overflow-y: scroll;
     }
 }
 
@@ -751,9 +746,6 @@ html::-webkit-scrollbar-thumb,
 }
 
 @media screen and (max-width: 393px){
-    .modal{
-        max-height: 92vh;
-    }
     .bought-product-name{
         font-size: 12px;
     }
