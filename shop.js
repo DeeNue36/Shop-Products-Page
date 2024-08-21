@@ -120,6 +120,7 @@ function setBorderStyle(element, isVisible) {
      ** Sets the border style of an element based on visibility.
      ** @param {HTMLElement} element - The element to set the border style.
      ** @param {boolean} isVisible - The visibility state to determine the border style.
+     ** By default border is not defined hence why true sets it to '2px solid...' and false sets it to 'none'
     */
     element.style.border = isVisible ? '2px solid #c73a0f' : 'none';
 };
@@ -130,6 +131,7 @@ function toggleProductCardButtonState(button, isVisible) {
      ** Toggles the visibility of a button and its associated content.
      ** @param {HTMLElement} button - The button element to toggle.
      ** @param {boolean} isVisible - The visibility state to set (true for hidden, false for visible).
+     ** By default the button is enabled hence why true sets it to 'none' and false sets it to 'flex'
     */
     button.style.display = isVisible ? 'none' : 'flex';
 
@@ -184,7 +186,7 @@ function handleDecreaseQuantity(event) {
 
     //* Checks if each of the product quantities is 0
     if (cart[id] === 0) {
-        //? the add to cart button currently has the property 'display:none' meaning the parameter isVisible is 'true' so this displays the add to cart button by setting the property to 'display:flex' which means the parameter isVisible is 'false'
+        //? the add to cart button has the property 'display:none' so the param isVisible is 'true', this re-displays the add to cart button by setting the property to 'display:flex' which means the param isVisible is now 'false'
         toggleProductCardButtonState(button, false); 
 
         //* Get the element with the class 'cart-contents' which is the div that contains ALL the products added to the cart
@@ -367,7 +369,7 @@ function displayAddedProducts() {
                         //? Remove the container from the DOM
                         event.target.closest('.added-products-container').remove(); 
 
-                        //? Change the button of the deleted product back to "Add to Cart"
+                        //? Change the button of the deleted product back to the "Add to Cart" button
                         const productCards = document.querySelector(`.product-cards[data-id="${id}"]`);
                         const addToCartButton = productCards.querySelector('.add-product');
                         toggleProductCardButtonState(addToCartButton, false);
@@ -386,13 +388,29 @@ function displayAddedProducts() {
     };
 };
 
+//! Function to disable body scrolling when modal is open or closed
+function disableBodyScrolling(element, scroll){
+    /** 
+     ** Toggles the scrolling of the body.
+     ** @param {HTMLElement} element - The body element to toggle.
+     ** @param {boolean} scroll - The visibility state to set (true for hidden, false for scroll).
+     ** By default scroll is enabled hence why true sets it to hidden and false sets it to scroll
+    */
+    element.style.overflowY = scroll ? 'hidden' : 'scroll';
+}
+
 //! Confirm an order and display modal with the list of products bought, quantity, prices and overall total price 
+const disableBodyScroll = document.body;
 const confirmOrder = document.getElementById('confirm-order');
 const modal = document.querySelector('.modal-container');
 confirmOrder.addEventListener('click', () => {
     //* display the modal 
     modal.classList.remove('hide');
     modal.classList.add('show');
+
+    //* disable body scrolling when modal is open
+    // disableBodyScroll.style.overflowY = 'hidden';
+    disableBodyScrolling(disableBodyScroll, true);
 
     //* Get the added products from the cart
     const boughtProducts = Object.keys(cart).map(id => {
@@ -472,6 +490,11 @@ confirmOrder.addEventListener('click', () => {
         modal.classList.add('hide');
         modal.classList.remove('show');
         modalContent.innerHTML = ' ';
+
+        //* Enable scrolling when modal is closed
+        // disableBodyScroll.style.overflowY = 'scroll';
+        disableBodyScrolling(disableBodyScroll, false);
+
     });
 
     //* Start a new order
@@ -482,7 +505,7 @@ confirmOrder.addEventListener('click', () => {
         spinner.classList.remove('hide');
         spinner.classList.add('show');
 
-        //? Delay the reset actions
+        //? Delays the reset actions
         setTimeout(() => {
             //* Reset the cart and product quantities
             //! cart = {}; -- does not work since I used const to declare the cart variable, to use this change the const to let --
@@ -510,6 +533,10 @@ confirmOrder.addEventListener('click', () => {
             modal.classList.add('hide');
             modal.classList.remove('show');
             modalContent.innerHTML = '';
+
+            //* Enable scrolling when modal is closed
+            // disableBodyScroll.style.overflowY = 'scroll';
+            disableBodyScrolling(disableBodyScroll, false);
 
             //* Update the cart count and total price
             onCartUpdate();
