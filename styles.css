@@ -405,7 +405,7 @@ body{
     height: 100%;
     top: 0;
     justify-content: center;
-    align-items: center;
+    place-items: center;
 }
 
 /** Styles to toggle modal display */
@@ -426,24 +426,30 @@ body{
     width: 40vw;
     /* height: -webkit-fill-available; */
     /** -webkit-fill-available adds extra white space, prominent in smaller devices when only a product or two are being displayed in the modal */
-    height: calc(100vh - 100px);
+    height: calc(100vh - 120px);
     border-radius: 10px;
     margin: 20px 0;
     padding: 20px;
     overflow-y: scroll;
 }
 
+html::-webkit-scrollbar,
 .modal::-webkit-scrollbar, 
+.modal-container::-webkit-scrollbar,
 .order-summary::-webkit-scrollbar {
     width: 5px; /** width of the entire scrollbar */
 }
 
-.modal::-webkit-scrollbar-track, 
+html::-webkit-scrollbar-track,
+.modal::-webkit-scrollbar-track,
+.modal-container::-webkit-scrollbar-track, 
 .order-summary::-webkit-scrollbar-track {
     background-color: transparent; /** track = background of the scrollbar */
 }
 
+html::-webkit-scrollbar-thumb,
 .modal::-webkit-scrollbar-thumb,
+.modal-container::-webkit-scrollbar-thumb,
 .order-summary::-webkit-scrollbar-thumb {
     background-color: var(--rose-variant-five); /** thumb = scrollbar */ /** color of the scroll thumb */
     border-radius: 20px;       /** roundness of the scroll thumb */
@@ -601,7 +607,7 @@ body{
     }
 }
 
-@media screen and (max-width: 1024px){
+@media screen and (max-width: 1024.9px){
     .product-listings{
         width: -webkit-fill-available;
     }
@@ -619,12 +625,16 @@ body{
     .cart{
         width: 35vw;
     }
+    .modal-container{
+        place-items: baseline;
+        overflow-y: scroll;    
+    }
     .modal{
         display: flex;
         flex-flow: column;
         justify-content: space-evenly;
         width: 60vw;
-        height: initial;
+        height: max-content;
         overflow-y: hidden;
     }
     .order-summary{
