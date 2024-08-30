@@ -38,7 +38,7 @@ fetch('./assets/data.json')
                     id="product-image"
                     alt="${products.name}-mobile"
                 >
-                <button type="button" class="add-product" id="add-to-cart"> 
+                <button type="button" class="add-product"> 
                     <img src="assets/images/icon-add-to-cart.svg" 
                         alt="add-to-cart"
                     >
