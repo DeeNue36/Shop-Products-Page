@@ -9,6 +9,7 @@
     --rose-variant-four: hsl(7, 20%, 60%);
     --rose-variant-five: hsl(12, 20%, 44%);
     --rose-variant-six: hsl(14, 65%, 9%);
+    --background-color: hsl(60, 63%, 95%);
     --font-weight-regular: 400;
     --font-weight-semibold: 600;
     --font-weight-bold: 700;
@@ -29,7 +30,7 @@ body {
 
 body{
     font-family: 'Red Hat Text', sans-serif;
-    background-color: hsl(60, 63%, 95%);
+    background-color: var(--background-color);
     background-image: url("assets/bg-images/bg-01.jpg");
     background-repeat: no-repeat;
     background-size: cover;
@@ -42,17 +43,21 @@ body{
 
 .product-listings-mobile-header{
     display: none;
-    padding: 30px;
+    padding: clamp(1.5rem, 4vw, 2rem);
 }
 
 /** Products container -- contains all products & the cart  */
 
 .products-container{
-    margin: 50px 30px 50px 50px;
+    /* margin: 50px 30px 50px 50px; */
+    margin-top: clamp(2rem, 6.667vw, 4rem);
+    margin-bottom: clamp(2rem, 6.667vw, 4rem);
+    margin-inline-start: clamp(1.55rem, 6.667vw, 5rem);
+    margin-inline-end: clamp(1.55rem, 4vw, 2rem);
     display: grid;
     grid-template-columns: 2fr 1fr;
     /* grid-template-columns: auto auto; */
-    gap: 20px;
+    gap: 1.25rem;
 }
 
 .product-listings{
@@ -212,7 +217,7 @@ body{
     margin: 0 auto;
 }
 
-/** button value */
+/** Quantity value */
 
 .quantity-value{
     color: #fff;
