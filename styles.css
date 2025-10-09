@@ -123,8 +123,8 @@ body {
     display: flex;
     flex-direction: column;
     background-color: var(--products-background-color);
-    -webkit-backdrop-filter: blur(8px) !important; 
-    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px); 
+    backdrop-filter: blur(8px);
     border: 1px solid var(--products-border-color);
     border-radius: 0.625rem;
     padding: 0.5rem;
