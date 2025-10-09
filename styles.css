@@ -194,7 +194,6 @@ body {
 .decrease-quantity, 
 .increase-quantity {
     border-radius: 50%;
-    border: none;
     background-color: transparent;
     border: 1px solid var(--text-color);
     cursor: pointer;
@@ -202,14 +201,6 @@ body {
     height: 1.25rem;
 }
 
-.decrease-quantity:hover, 
-.increase-quantity:hover {
-    .add, .minus{
-        fill: var(--primary-color-one);
-    }
-    background-color: var(--text-color);
-    
-}
 
 /** '-' & '+' icons styling */
 
@@ -224,6 +215,14 @@ body {
     height: .625rem;
 }
 
+.decrease-quantity:hover, 
+.increase-quantity:hover {
+    .add, .minus{
+        fill: var(--primary-color-one);
+    }
+    background-color: var(--text-color);
+    
+}
 
 /** Quantity value */
 
