@@ -318,12 +318,12 @@ function displayAddedProducts() {
     //* Checks if the data is cached
     if (!cachedData) {
         fetch('./assets/data.json')
-          .then(response => response.json())
-          .then(data => {
+        .then(response => response.json())
+        .then(data => {
             cachedData = data;
             //* Call the function again to use the cached data
             displayAddedProducts(); 
-          })
+        })
         .catch(error => console.error('Error fetching data:', error));
     }
     else {
