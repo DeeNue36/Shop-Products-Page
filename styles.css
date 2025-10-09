@@ -663,8 +663,8 @@ html::-webkit-scrollbar-thumb,
         top: 0;
         z-index: 1;
         background-color: var(--products-mobile-header-background);
-        -webkit-backdrop-filter: blur(8px) !important; 
-        backdrop-filter: blur(8px) !important;
+        -webkit-backdrop-filter: blur(8px); 
+        backdrop-filter: blur(8px);
     }
     .products-container {
         grid-template-columns: auto;
