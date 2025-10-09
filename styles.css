@@ -213,16 +213,17 @@ body {
 
 /** '-' & '+' icons styling */
 
+.add {
+    display: block;
+    margin: 0 auto;
+}
+
 .minus, .add {
     fill: var(--text-color);
     width: .625rem;
     height: .625rem;
 }
 
-.add {
-    display: block;
-    margin: 0 auto;
-}
 
 /** Quantity value */
 
@@ -628,7 +629,7 @@ html::-webkit-scrollbar-thumb,
     }
     .product-img-tablet {
         display: block;
-        width: clamp(210px, calc(200px + 1.64vw), 220px);
+        width: clamp(13.125rem, calc(12.5rem + 1.64vw), 13.75rem);
     }
     .add-product {
         width: 60%;
