@@ -1,15 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Red+Hat+Text:ital,wght@0,300..700;1,300..700&display=swap');
 
-:root{
-    --primary-color-one: hsl(14, 86%, 42%);
-    --primary-color-two: hsl(159, 69%, 38%);
-    --rose-variant-one: hsl(20, 50%, 98%);
-    --rose-variant-two: hsl(13, 31%, 94%);
-    --rose-variant-three: hsl(14, 25%, 72%);
-    --rose-variant-four: hsl(7, 20%, 60%);
-    --rose-variant-five: hsl(12, 20%, 44%);
-    --rose-variant-six: hsl(14, 65%, 9%);
-    --background-color: hsl(60, 63%, 95%);
+:root {
+    --primary-color-one: #c73a0f;
+    --primary-color-two: #1ea475;
+    --rose-variant-one: #fcf9f7;
+    --rose-variant-two: #f4edeb;
+    --rose-variant-three: #c9aea6;
+    --rose-variant-four: #ad8985;
+    --rose-variant-five: #87635a;
+    --rose-variant-six: #260f08;
+    --background-color: #fafaea;
+    --cart-icon-color: #0F0F0F;
+    --text-color: #FFF;
     --font-weight-regular: 400;
     --font-weight-semibold: 600;
     --font-weight-bold: 700;
@@ -17,7 +19,7 @@
 
 }
 
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -28,7 +30,7 @@ body {
     max-width: 100vw;
 }
 
-body{
+body {
     font-family: 'Red Hat Text', sans-serif;
     background-color: var(--background-color);
     background-image: url("assets/bg-images/bg-01.jpg");
@@ -41,26 +43,22 @@ body{
     /* background-color: var(--rose-variant-two); */
 }
 
-.product-listings-mobile-header{
+.product-listings-mobile-header {
     display: none;
     padding: clamp(1.5rem, 4vw, 2rem);
 }
 
 /** Products container -- contains all products & the cart  */
 
-.products-container{
-    /* margin: 50px 30px 50px 50px; */
-    margin-top: clamp(2rem, 6.667vw, 4rem);
-    margin-bottom: clamp(2rem, 6.667vw, 4rem);
-    margin-inline-start: clamp(1.55rem, 6.667vw, 5rem);
-    margin-inline-end: clamp(1.55rem, 4vw, 2rem);
+.products-container {
+    margin: 3.125rem 1.875rem 3.125rem 3.125rem;
     display: grid;
     grid-template-columns: 2fr 1fr;
     /* grid-template-columns: auto auto; */
     gap: 1.25rem;
 }
 
-.product-listings{
+.product-listings {
     width: 60vw;
 }
 
@@ -81,7 +79,7 @@ body{
 }
 
 .mini-cart-icon {
-    fill: #0F0F0F;
+    fill: var(--cart-icon-color);
 }
 
 .mini-cart-value {
@@ -89,17 +87,17 @@ body{
     justify-content: center;
     align-items: center;
     position: absolute;
-    top: -15px;
-    right: -15px;
+    top: clamp(-0.941rem, -0.942rem + 0.01vw, -0.938rem);
+    right: clamp(-0.941rem, -0.942rem + 0.01vw, -0.938rem);
     background-color: var(--primary-color-one);
     border-radius: 50%;
-    height: 20px;
-    width: 20px;
-    padding: 15px;
+    height: 1.25rem;
+    width: 1.25rem;
+    padding: 0.9375rem;
     text-align: center;
-    color: #fff;
-    font-size: 15px;
-    font-weight: 600;
+    color: var(--text-color);
+    font-size: 0.9375rem;
+    font-weight: var(--font-weight-semibold);
 }
 
 /** Product details styling */
