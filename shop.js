@@ -13,7 +13,7 @@ fetch('./assets/data.json')
     data = jsonData; //* Assigns the fetched data to the global variable "data"
 
     //* Displays the product cards in its parent HTML Element 'products'
-    let productElements = document.getElementById("products");
+    const productElements = document.getElementById("products");
     let html = "";
     data.forEach(products => {
 
@@ -248,8 +248,8 @@ function onCartUpdate(){
     //* Used to calculate the total price
     let totalPrice = 0; 
 
-    //* cartCount is re-initialized in this block to prevent any issues with the global variable cartCount. Used to update the HTML Element 'Your cart(0)'
-    let cartCount = 0; 
+    //* cartCount is re-initialized in this block as cartIconCount to prevent any issues with the global variable cartCount. Used to update the HTML Element 'Your cart(0)'
+    let cartIconCount = 0; 
 
     //* Loops/iterates through the keys of the object cart and gets the id's
     for(const id of Object.keys(cart)){
@@ -258,7 +258,7 @@ function onCartUpdate(){
         const quantity = cart[id]; 
 
         //* updates the HTML element "Your Cart(0)"
-        cartCount += quantity;
+        cartIconCount += quantity;
 
         //* Retrieves the price of each of the products using their id's and initializes it to "price"
         const price = productPrice[id];
@@ -267,7 +267,7 @@ function onCartUpdate(){
         totalPrice += quantity * price;
     }
 
-    if (cartCount < 1) {
+    if (cartIconCount < 1) {
         //* hides the delivery message and checkout button
         checkoutContainer.style.display = 'none';
         displayEmptyCartMessage();
@@ -283,13 +283,13 @@ function onCartUpdate(){
 
     //* Updates the cart value i.e the HTML Element "(Your cart(0))"
     const cartAmount = document.getElementById('cart-quantity');
-    cartAmount.innerText = cartCount;
+    cartAmount.innerText = cartIconCount;
 
     //* Updates the mini cart values
     const miniCartIcon = document.getElementById('mini-cart-value');
     const miniCartIconMobile = document.getElementById('mini-cart-value-mobile');
-    miniCartIcon.innerText = cartCount;
-    miniCartIconMobile.innerText = cartCount;
+    miniCartIcon.innerText = cartIconCount;
+    miniCartIconMobile.innerText = cartIconCount;
     
 };
 
